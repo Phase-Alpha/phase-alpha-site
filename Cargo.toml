@@ -26,7 +26,9 @@ tracing = { version = "0.1.37", optional = true }
 http = "0.2.8"
 gray_matter = "0.2.6"
 pulldown-cmark = "0.9.3"
-serde = { version = "1.0.188", features = ["derive"] }
+serde = { version = "1.0.188", features = ["derive", "serialize", "deserialze"] }
+sqlx = {version = "0.7.2", features = ["postgres"]}
+chrono = "0.4.31"
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
