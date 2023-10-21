@@ -9,14 +9,14 @@ use std::fs;
 // Define a struct for the metadata
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct PostMetadata {
-    title: String,
-    description: String,
-    date: String,
-    image_path: String,
+    pub title: String,
+    pub description: String,
+    pub date: String,
+    pub image_path: String,
 }
 
 impl PostMetadata {
-    fn create_href(self) -> String {
+    pub fn create_href(self) -> String {
         let link = self.title.replace(' ', "-").to_lowercase();
         link
     }
@@ -25,8 +25,8 @@ impl PostMetadata {
 // Define a struct representing a blog post
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct Post {
-    meta_data: PostMetadata,
-    content: String,
+    pub meta_data: PostMetadata,
+    pub content: String,
 }
 
 // Read Markdown files from a folder and convert them to a vector of posts
