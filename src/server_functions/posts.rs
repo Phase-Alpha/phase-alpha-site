@@ -30,7 +30,12 @@ pub struct Post {
 }
 
 // Read Markdown files from a folder and convert them to a vector of posts
-// #[server(GetPosts, "/api")]
+#[server(GetPosts, "/api")]
+pub async fn get_posts(folder_path: String) -> Result<Vec<Post>, ServerFnError> {
+    let posts = read_markdown_files(folder_path);
+    Ok(posts)
+}
+
 pub fn read_markdown_files(folder_path: &str) -> Vec<Post> {
     let mut posts = Vec::new();
     let mut options = Options::empty();
@@ -60,8 +65,9 @@ pub fn read_markdown_files(folder_path: &str) -> Vec<Post> {
 mod tests {
     use super::*;
     const TEST_POSTS_PATH: &str = "./test-posts/";
+    const INCORRECT_PATH: &str = "./error-path/";
     #[test]
-    fn test_read() {
+    fn test_read_pass() {
         let posts = read_markdown_files(&TEST_POSTS_PATH);
         let expected = vec![Post {
             meta_data: PostMetadata {
@@ -75,5 +81,11 @@ mod tests {
             ),
         }];
         assert_eq!(expected, posts)
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_read_incorrect_dir() {
+        let posts = read_markdown_files(&INCORRECT_PATH);
     }
 }
