@@ -4,7 +4,7 @@ use gray_matter::{engine::YAML, Matter};
 use leptos::*;
 use pulldown_cmark::{html, Options, Parser};
 use serde::{Deserialize, Serialize};
-use std::fs;
+use std::{collections::HashMap, fs};
 
 // Define a struct for the metadata
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -36,7 +36,16 @@ pub async fn get_posts(folder_path: String) -> Result<Vec<Post>, ServerFnError> 
     Ok(posts)
 }
 
-pub fn read_markdown_files(folder_path: &str) -> Vec<Post> {
+#[server(GetPost, "/api")]
+pub async fn get_post(href: String, folder_path: String) -> Result<Option<Post>, ServerFnError> {
+    let posts = read_markdown_files(folder_path);
+    Ok(posts
+        .iter()
+        .find(|post| post.meta_data.clone().create_href() == href)
+        .cloned())
+}
+
+pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
     let mut posts = Vec::new();
     let mut options = Options::empty();
     options.insert(Options::ENABLE_HEADING_ATTRIBUTES);
@@ -68,7 +77,7 @@ mod tests {
     const INCORRECT_PATH: &str = "./error-path/";
     #[test]
     fn test_read_pass() {
-        let posts = read_markdown_files(&TEST_POSTS_PATH);
+        let posts = read_markdown_files(TEST_POSTS_PATH.to_string());
         let expected = vec![Post {
             meta_data: PostMetadata {
                 title: String::from("Test Post"),
@@ -86,6 +95,6 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_read_incorrect_dir() {
-        let posts = read_markdown_files(&INCORRECT_PATH);
+        let posts = read_markdown_files(INCORRECT_PATH.to_string());
     }
 }

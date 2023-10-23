@@ -32,6 +32,8 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="" view=home::HomePage/>
                     <Route path="/services" view=services::Services/>
+                    <Route path="/blog" view=blog::Blog/>
+                    <Route path="/blog/post/:post" view=blog::BlogPost/>
                 </Routes>
             </main>
         </Router>
