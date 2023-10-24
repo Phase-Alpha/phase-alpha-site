@@ -4,7 +4,7 @@ use gray_matter::{engine::YAML, Matter};
 use leptos::*;
 use pulldown_cmark::{html, Options, Parser};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, fs};
+use std::fs;
 
 // Define a struct for the metadata
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -34,15 +34,6 @@ pub struct Post {
 pub async fn get_posts(folder_path: String) -> Result<Vec<Post>, ServerFnError> {
     let posts = read_markdown_files(folder_path);
     Ok(posts)
-}
-
-#[server(GetPost, "/api")]
-pub async fn get_post(href: String, folder_path: String) -> Result<Option<Post>, ServerFnError> {
-    let posts = read_markdown_files(folder_path);
-    Ok(posts
-        .iter()
-        .find(|post| post.meta_data.clone().create_href() == href)
-        .cloned())
 }
 
 pub fn read_markdown_files(folder_path: String) -> Vec<Post> {

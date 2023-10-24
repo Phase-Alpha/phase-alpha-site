@@ -1,44 +1,14 @@
 use crate::components::navigation::*;
-use crate::server_functions::posts::{get_post, get_posts};
-use crate::server_functions::*;
+use crate::server_functions::posts::*;
 use leptos::*;
-use leptos_router::{use_params, use_params_map};
-
-// #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-// pub struct Post {
-//     id: usize,
-//     title: String,
-//     content: String,
-// }
-
-// #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-// pub struct PostMetadata {
-//     id: usize,
-//     title: String,
-// }
-
-// #[server]
-// pub async fn list_post_metadata() -> Result<Vec<PostMetadata>, ServerFnError> {
-//     tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-//     Ok(POSTS
-//         .iter()
-//         .map(|data| PostMetadata {
-//             id: data.id,
-//             title: data.title.clone(),
-//         })
-//         .collect())
-// }
-
-// #[server]
-// pub async fn get_post(id: usize) -> Result<Option<Post>, ServerFnError> {
-//     tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-//     Ok(POSTS.iter().find(|post| post.id == id).cloned())
-// }
+use leptos_router::use_params_map;
 
 #[component]
 pub fn Blog() -> impl IntoView {
     // load the posts
-    let posts = create_resource(|| (), |_| async { get_posts("./posts/".to_string()).await });
+    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
+        .expect("unable to find context");
+    // let posts = create_resource(|| (), |_| async { get_posts("./posts/".to_string()).await });
     let posts_view = move || {
         posts.and_then(|posts| {
                 posts.iter()
@@ -71,32 +41,31 @@ pub fn Blog() -> impl IntoView {
                     </section>
 
             </div>
-
-            // <footer id="footer" class="wrapper alt">
-            //     <div class="inner">
-            //     </div>
-            // </footer>
-
     </body>
     }
 }
 
 #[component]
 pub fn BlogPost() -> impl IntoView {
+    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
+        .expect("unable to find context");
     let params = use_params_map();
-    let data = create_resource(
-        move || params.with(|p| p.get("post").cloned().unwrap_or_default()),
-        move |post| get_post(post, "./posts/".to_string()),
-    );
+    let query = move || params.with(|params| params.get("post").cloned().unwrap_or_default());
+
     // load the posts
-    // let post_view = move || {
-    //     posts.and_then(|posts| {
-    //         let post = get_post(href, *posts);
-    //         return view! {
-    //             post.content
-    //         };
-    //     })
-    // };
+    let post_view = move || {
+        posts.and_then(|posts| {
+            posts
+                .iter()
+                .find(|&p| p.meta_data.clone().create_href() == query())
+                .map(|post| {
+                    view! {
+                        <h1 class="major">{&post.meta_data.title}</h1>
+                        <div inner_html=post.clone().content/>
+                    }
+                })
+        })
+    };
     view! {
             <body>
 
@@ -109,19 +78,13 @@ pub fn BlogPost() -> impl IntoView {
 
                         <section id="main" class="wrapper">
                             <div class="inner">
-                                <h1 class="major">{data.meta_data.clone().title}</h1>
                                 <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
-                                    <ul>{data.content}</ul>
+                                    {post_view}
                                 </Suspense>
                             </div>
                         </section>
 
                 </div>
-
-                // <footer id="footer" class="wrapper alt">
-                //     <div class="inner">
-                //     </div>
-                // </footer>
 
         </body>
     }

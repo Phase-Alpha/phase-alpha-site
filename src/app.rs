@@ -1,5 +1,6 @@
 use crate::components::*;
 use crate::error_template::{AppError, ErrorTemplate};
+use crate::server_functions::posts::*;
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -8,6 +9,8 @@ use leptos_router::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    let posts = create_resource(|| (), |_| async { get_posts("./posts/".to_string()).await });
+    provide_context(posts);
 
     view! {
 
