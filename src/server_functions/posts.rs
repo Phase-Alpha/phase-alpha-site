@@ -64,7 +64,7 @@ pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    const TEST_POSTS_PATH: &str = "./test-posts/";
+    const TEST_POSTS_PATH: &str = "test-posts/";
     const INCORRECT_PATH: &str = "./error-path/";
     #[test]
     fn test_read_pass() {

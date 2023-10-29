@@ -1,9 +1,34 @@
 use crate::components::navigation::*;
+use crate::server_functions::posts::*;
 use leptos::*;
 
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
+    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
+        .expect("unable to find context");
+
+    let posts_view = move || {
+        posts.and_then(|posts| {
+                posts[0..=2].iter()
+                    .map(|post| view! {
+                        <section>
+                            <a href=format!("/blog/post/{}", post.meta_data.clone().create_href()) class="image"><img src={&post.meta_data.image_path} alt="" data-position="center center" /></a>
+                            <div class="content">
+                                <div class="inner">
+                                    <h2>{&post.meta_data.title}</h2>
+                                    <p>{&post.meta_data.description}</p>
+                                    <ul class="actions">
+                                        <li><a href=format!("/blog/post/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    })
+                    .collect_view()
+            })
+    };
+
     view! {
         <body>
             <section id="sidebar">
@@ -28,42 +53,9 @@ pub fn HomePage() -> impl IntoView {
                     </section>
 
                     <section id="one" class="wrapper style2 spotlights">
-                        <section>
-                            <a href="#" class="image"><img src="pic01.jpg" alt="" data-position="center center" /></a>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>Sed ipsum dolor</h2>
-                                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                                    <ul class="actions">
-                                        <li><a href="generic" class="button">Read</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
-                        <section>
-                            <a href="#" class="image"><img src="pic02.jpg" alt="" data-position="top center" /></a>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>Feugiat consequat</h2>
-                                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                                    <ul class="actions">
-                                        <li><a href="generic.html" class="button">Read</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
-                        <section>
-                            <a href="#" class="image"><img src="pic03.jpg" alt="" data-position="25% 25%" /></a>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>Ultricies aliquam</h2>
-                                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-                                    <ul class="actions">
-                                        <li><a href="generic.html" class="button">Read</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
+                        <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
+                            {posts_view}
+                        </Suspense>
                     </section>
 
                     <section id="two" class="wrapper style3 fade-up">
