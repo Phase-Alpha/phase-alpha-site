@@ -13,7 +13,7 @@ pub fn HomePage() -> impl IntoView {
                 posts[0..=2].iter()
                     .map(|post| view! {
                         <section>
-                            <a href=format!("/blog/post/{}", post.meta_data.clone().create_href()) class="image"><img src={&post.meta_data.image_path} alt="" data-position="center center" /></a>
+                            <img src={&post.meta_data.image_path} alt="" data-position="center center"  width="45%" height="45%"/>
                             <div class="content">
                                 <div class="inner">
                                     <h2>{&post.meta_data.title}</h2>
@@ -75,26 +75,6 @@ pub fn HomePage() -> impl IntoView {
                                     <h3>Design && Writing</h3>
                                     <p>Perhaps you need some UI/UX design, or proof reading and copywriting. They might seem mutually exclusive, but an element of creativity is necessary in most fields.</p>
                                 </section>
-                                // <section>
-                                //     <span class="icon solid major fa-cog"></span>
-                                //     <h3>Sed erat ullam corper</h3>
-                                //     <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-                                // </section>
-                                // <section>
-                                //     <span class="icon solid major fa-desktop"></span>
-                                //     <h3>Veroeros quis lorem</h3>
-                                //     <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-                                // </section>
-                                // <section>
-                                //     <span class="icon solid major fa-link"></span>
-                                //     <h3>Urna quis bibendum</h3>
-                                //     <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-                                // </section>
-                                // <section>
-                                //     <span class="icon major fa-gem"></span>
-                                //     <h3>Aliquam urna dapibus</h3>
-                                //     <p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-                                // </section>
                             </div>
                             <ul class="actions">
                                 <li><a href="/services" class="button">Learn more</a></li>
@@ -138,20 +118,6 @@ pub fn HomePage() -> impl IntoView {
                                             <h3>Email</h3>
                                             <a href="#">info@phasealpha.io</a>
                                         </li>
-                                        // <li>
-                                        //     <h3>Phone</h3>
-                                        //     <span>(000) 000-0000</span>
-                                        // </li>
-                                        // <li>
-                                        //     <h3>Social</h3>
-                                        //     <ul class="icons">
-                                        //         <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                                        //         <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                                        //         <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                                        //         <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                                        //         <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-                                        //     </ul>
-                                        // </li>
                                     </ul>
                                 </section>
                             </div>
@@ -159,11 +125,6 @@ pub fn HomePage() -> impl IntoView {
                     </section>
 
             </div>
-
-            // <footer id="footer" class="wrapper alt">
-            //         <div class="inner">
-            //         </div>
-            // </footer>
 
         </body>
     }
