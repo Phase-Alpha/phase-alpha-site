@@ -19,7 +19,7 @@ pub fn HomePage() -> impl IntoView {
                                     <h2>{&post.meta_data.title}</h2>
                                     <p>{&post.meta_data.description}</p>
                                     <ul class="actions">
-                                        <li><a href=format!("/blog/post/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
+                                        <li><a href=format!("/blog/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
                                     </ul>
                                 </div>
                             </div>

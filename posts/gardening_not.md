@@ -2,7 +2,7 @@
 title: Gardening or not
 description: Changing a jungle into a clean landscape
 date: 2020-11-08
-image_path: 'lisboa_lounge.jpg'
+image_path: '/lisboa_lounge.jpg'
 ---
 
 For analogies, I imagine people don’t usually use weeds as a good example. They should though, honestly!

@@ -14,7 +14,7 @@ pub fn Blog() -> impl IntoView {
                 posts.iter()
                     .map(|post| view! {
                         <li>
-                            <a href=format!("/blog/post/{}", post.meta_data.clone().create_href())>{&post.meta_data.title}</a>
+                            <a href=format!("/blog/{}", post.meta_data.clone().create_href())>{&post.meta_data.title}</a>
                         </li>
                     })
                     .collect_view()
