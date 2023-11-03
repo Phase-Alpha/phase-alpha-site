@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_router::A;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum NavElements {
@@ -34,7 +35,7 @@ pub fn Nav(exclude: Option<NavElements>, current_page: NavElements) -> impl Into
                 .map(|(e, href, text)| {
                     let exact = e == NavElements::Home;
                     view! {
-                        <li><a exact=exact href=href><p>{text}</p></a></li>
+                        <li><A exact=exact href=href><p>{text}</p></A></li>
                     }
                 })
                 .collect::<Vec<_>>();
@@ -46,7 +47,7 @@ pub fn Nav(exclude: Option<NavElements>, current_page: NavElements) -> impl Into
                 .map(|(e, href, text)| {
                     let exact = e == NavElements::Home;
                     view! {
-                        <li><a exact=exact href=href><p>{text}</p></a></li>
+                        <li><A exact=exact href=href><p>{text}</p></A></li>
                     }
                 })
                 .collect::<Vec<_>>();

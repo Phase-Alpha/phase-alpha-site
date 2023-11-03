@@ -1,7 +1,7 @@
 use crate::components::navigation::*;
 use crate::server_functions::posts::*;
 use leptos::*;
-use leptos_router::use_params_map;
+use leptos_router::{use_params_map, A};
 
 #[component]
 pub fn Blog() -> impl IntoView {
@@ -25,7 +25,7 @@ pub fn Blog() -> impl IntoView {
         <body>
 
             <header id="header">
-                <a href="" class="title">PhaseAlpha</a>
+                <A href="" class="title">PhaseAlpha</A>
                 <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
             </header>
 
@@ -70,7 +70,7 @@ pub fn BlogPost() -> impl IntoView {
             <body>
 
                 <header id="header">
-                    <a href="" class="title">PhaseAlpha</a>
+                    <A href="" class="title">PhaseAlpha</A>
                     <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
                 </header>
 
