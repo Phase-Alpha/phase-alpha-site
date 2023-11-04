@@ -9,7 +9,10 @@ use leptos_router::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
-    let posts = create_resource(|| (), |_| async { get_posts("posts/".to_string()).await });
+    let posts = create_resource(
+        || (),
+        |_| async move { get_posts("posts/".to_string()).await },
+    );
     provide_context(posts);
 
     view! {
@@ -35,7 +38,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="" view=home::HomePage/>
                     <Route path="/services" view=services::Services/>
-                    <Route path="/blog" view=blog::Blog/>
+                    <Route path="/blog" view= move || {view! {<blog::Blog/>}} ssr=SsrMode::Async/>
                     <Route path="/blog/:post" view=blog::BlogPost/>
                 </Routes>
             </main>
