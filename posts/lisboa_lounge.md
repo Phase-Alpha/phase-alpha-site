@@ -13,7 +13,7 @@ On our way to Portugal and Spain I managed to take advantage and use the lounge,
 
 Even if you’re full, there’s always room for Pastel de Nata!
 
-<img src="/pastel_de_nata.jpg"/>
+<img src="/pastel_de_nata.jpg" width="500" height="auto">
 
 Apply for the gold card below!
 Get bonus miles! Ok, I also get miles, so it’s win win!!
