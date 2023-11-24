@@ -43,7 +43,10 @@ pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
     for entry in fs::read_dir(folder_path).expect("Error reading folder") {
         if let Ok(entry) = entry {
             let file_path = entry.path();
-            let file_content = fs::read_to_string(&file_path).expect("Error reading file");
+            let mut file_content: String = String::new();
+            if file_path.is_file() && file_path.extension().map_or(false, |ext| ext == "md") {
+                file_content = fs::read_to_string(&file_path).expect("Error reading file");
+            }
             let matter = Matter::<YAML>::new();
             let metadata = matter
                 .parse_with_struct::<PostMetadata>(&file_content)
