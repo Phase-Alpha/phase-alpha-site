@@ -17,23 +17,16 @@ Don’t get me started on passenger locator forms. You have to fill them out for
 
 (img)
 
-(img)
-
-(img)
-
 I’ve been meaning to go to Barcelona, not sure why it took 10 years to get around to it.
 Let’s get to it though, Gaudi’s master piece, Le Sagrada Familia, this marvel will move you in some way or other, even if you aren’t artistically inclined.
 I would have to say this is one of the main reasons I’ve wanted to visit (and the food). I well up thinking about how this piece of art is still under construction, to this day. Gaudi managed to bring together so many artisans, from beyond the grave, creating a project that grows larger than life as the years go by.
 If you haven’t been to see it, I can’t urge you enough to buy a ticket right now and just go.
 
 (img)
-(img)
-(img)
 
 Now, about some of the food.
 There are amazing brunch places; Alsur Cafe, and Cremat11, were a couple of the cafes we tried. It is a tourist hot spot, so they are quite busy.
 Try the banana pancakes, or the toasted egg and salmon bagel, from Alsur.
-(img)
 (img)
 If you are looking for a typical European breakfast (and to save a lot more cash), try a coffee and a Brioche or croissant from La Masala Cafe.
 I went with the home brewed Masala Chai, which was pleasantly unsweetened!
@@ -52,7 +45,6 @@ Guess what?? We rode the no. 28 tram line, the line which is essentially overrun
 
 If you decide to get the Lisboa Card (great if you’re interested in museums and galleries). You have to stop by MAAT, it’s the museum of Art and Architecture, the building itself is a must see, even if you don’t go inside. The bridge takes you onto the roof of the building!!
 
-(img)
 (img)
 
 Now a little bit about food, I know that pastel de Nata is a must,  but hear me out, chocolate cake at Landeau Chocolate cannot be missed! Make sure to try it!
