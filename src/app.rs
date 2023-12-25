@@ -38,7 +38,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="" view=home::HomePage/>
                     <Route path="/services" view=services::Services/>
-                    <Route path="/blog" view= move || {view! {<blog::Blog/>}} ssr=SsrMode::Async/>
+                    <Route path="/blog" view=blog::Blog/>
                     <Route path="/blog/:post" view=blog::BlogPost/>
                 </Routes>
             </main>
