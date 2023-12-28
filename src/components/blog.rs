@@ -22,26 +22,24 @@ pub fn Blog() -> impl IntoView {
     };
 
     view! {
-        <body>
 
-            <header id="header">
-                <A href="" class="title">PhaseAlpha</A>
-                <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
-            </header>
+        <header id="header">
+            <A href="" class="title">PhaseAlpha</A>
+            <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
+        </header>
 
-            <div id="wrapper">
+        <div id="wrapper">
 
-                    <section id="main" class="wrapper">
-                        <div class="inner">
-                            <h1 class="major">Blog Posts</h1>
-                            <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
-                                <ul>{posts_view}</ul>
-                            </Suspense>
-                        </div>
-                    </section>
+                <section id="main" class="wrapper">
+                    <div class="inner">
+                        <h1 class="major">Blog Posts</h1>
+                        <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
+                            <ul>{posts_view}</ul>
+                        </Suspense>
+                    </div>
+                </section>
 
-            </div>
-    </body>
+        </div>
     }
 }
 
@@ -67,25 +65,25 @@ pub fn BlogPost() -> impl IntoView {
         })
     };
     view! {
-            <body>
 
-                <header id="header">
-                    <A href="" class="title">PhaseAlpha</A>
-                    <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
-                </header>
 
-                <div id="wrapper">
+        <header id="header">
+            <A href="" class="title">PhaseAlpha</A>
+            <Nav exclude={Some(NavElements::None)} current_page={NavElements::Blog}/>
+        </header>
 
-                        <section id="main" class="wrapper">
-                            <div class="inner">
-                                <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
-                                    {post_view}
-                                </Suspense>
-                            </div>
-                        </section>
+        <div id="wrapper">
 
-                </div>
+                <section id="main" class="wrapper">
+                    <div class="inner">
+                        <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
+                            {post_view}
+                        </Suspense>
+                    </div>
+                </section>
 
-        </body>
+        </div>
+
+
     }
 }
