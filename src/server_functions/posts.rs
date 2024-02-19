@@ -1,5 +1,5 @@
 #[allow(unused)]
-use chrono::Utc;
+use chrono::NaiveDate;
 use gray_matter::{engine::YAML, Matter};
 use leptos::*;
 use pulldown_cmark::{html, Options, Parser};
@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 
 // Define a struct for the metadata
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PostMetadata {
     pub title: String,
     pub description: String,
@@ -23,7 +23,7 @@ impl PostMetadata {
 }
 
 // Define a struct representing a blog post
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Post {
     pub meta_data: PostMetadata,
     pub content: String,
@@ -33,7 +33,7 @@ pub struct Post {
 #[server(GetPosts, "/api")]
 pub async fn get_posts(folder_path: String) -> Result<Vec<Post>, ServerFnError> {
     let posts = read_markdown_files(folder_path);
-    Ok(posts)
+    Ok(order_posts(posts))
 }
 
 pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
@@ -64,11 +64,22 @@ pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
     posts
 }
 
+pub fn order_posts(mut posts: Vec<Post>) -> Vec<Post> {
+    posts.sort_by(|a, b| {
+        let date_a = NaiveDate::parse_from_str(&a.meta_data.date, "%Y-%m-%d").unwrap();
+        let date_b = NaiveDate::parse_from_str(&b.meta_data.date, "%Y-%m-%d").unwrap();
+        date_b.cmp(&date_a)
+    });
+    posts
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
     const TEST_POSTS_PATH: &str = "test-posts/";
     const INCORRECT_PATH: &str = "./error-path/";
+
     #[test]
     fn test_read_pass() {
         let posts = read_markdown_files(TEST_POSTS_PATH.to_string());
@@ -87,8 +98,68 @@ mod tests {
     }
 
     #[test]
+    fn test_sort_post() {
+        let posts = vec![
+            Post {
+                
+                meta_data: PostMetadata {
+                                title: String::from("Test Post 1"),
+                                description: String::from("Some more testing"),
+                                date: String::from("2022-10-15"),
+                                image_path: String::from("./public/pic01.jpg"),
+                },
+                content: String::from(
+                    "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
+                ),
+            },
+            Post {
+                
+                meta_data: PostMetadata {
+                                title: String::from("Test Post 2"),
+                                description: String::from("Some testing"),
+                                date: String::from("2023-10-14"),
+                                image_path: String::from("./public/pic01.jpg"),
+                },
+                content: String::from(
+                    "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
+                ),
+            },
+
+        ];
+
+        let expected = vec![
+            Post {
+                
+                meta_data: PostMetadata {
+                                title: String::from("Test Post 2"),
+                                description: String::from("Some testing"),
+                                date: String::from("2023-10-14"),
+                                image_path: String::from("./public/pic01.jpg"),
+                },
+                content: String::from(
+                    "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
+                ),
+            },
+            Post {
+                
+                meta_data: PostMetadata {
+                                title: String::from("Test Post 1"),
+                                description: String::from("Some more testing"),
+                                date: String::from("2022-10-15"),
+                                image_path: String::from("./public/pic01.jpg"),
+                },
+                content: String::from(
+                    "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
+                ),
+            },
+
+        ];
+        assert_eq!(expected, order_posts(posts))
+    }
+
+    #[test]
     #[should_panic]
     fn test_read_incorrect_dir() {
-        let posts = read_markdown_files(INCORRECT_PATH.to_string());
+        let _posts = read_markdown_files(INCORRECT_PATH.to_string());
     }
 }
