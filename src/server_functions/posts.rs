@@ -17,8 +17,7 @@ pub struct PostMetadata {
 
 impl PostMetadata {
     pub fn create_href(self) -> String {
-        let link = self.title.replace(' ', "-").to_lowercase();
-        link
+        self.title.replace(' ', "-").to_lowercase()
     }
 }
 
@@ -40,26 +39,24 @@ pub fn read_markdown_files(folder_path: String) -> Vec<Post> {
     let mut posts = Vec::new();
     let mut options = Options::empty();
     options.insert(Options::ENABLE_HEADING_ATTRIBUTES);
-    for entry in fs::read_dir(folder_path).expect("Error reading folder") {
-        if let Ok(entry) = entry {
-            let file_path = entry.path();
-            let mut file_content: String = String::new();
-            if file_path.is_file() && file_path.extension().map_or(false, |ext| ext == "md") {
-                file_content = fs::read_to_string(&file_path).expect("Error reading file");
-            }
-            let matter = Matter::<YAML>::new();
-            let metadata = matter
-                .parse_with_struct::<PostMetadata>(&file_content)
-                .expect("Failed to parse front matter");
-            let content = metadata.content;
-            let parser = Parser::new_ext(&content, options);
-            let mut html_content = String::new();
-            html::push_html(&mut html_content, parser);
-            posts.push(Post {
-                meta_data: metadata.data,
-                content: html_content,
-            });
+    for entry in fs::read_dir(folder_path).expect("Error reading folder").flatten() {
+        let file_path = entry.path();
+        let mut file_content: String = String::new();
+        if file_path.is_file() && file_path.extension().map_or(false, |ext| ext == "md") {
+            file_content = fs::read_to_string(&file_path).expect("Error reading file");
         }
+        let matter = Matter::<YAML>::new();
+        let metadata = matter
+            .parse_with_struct::<PostMetadata>(&file_content)
+            .expect("Failed to parse front matter");
+        let content = metadata.content;
+        let parser = Parser::new_ext(&content, options);
+        let mut html_content = String::new();
+        html::push_html(&mut html_content, parser);
+        posts.push(Post {
+            meta_data: metadata.data,
+            content: html_content,
+        });
     }
     posts
 }

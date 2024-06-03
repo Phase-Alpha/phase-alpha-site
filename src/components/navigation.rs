@@ -26,6 +26,7 @@ pub fn Nav(exclude: Option<NavElements>, current_page: NavElements) -> impl Into
         (NavElements::Blog, "/blog", "BLOG"),
     ];
 
+    #[allow(clippy::needless_late_init)]
     let nav_elements;
     match current_page {
         NavElements::Home => {
