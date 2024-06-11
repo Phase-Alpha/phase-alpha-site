@@ -11,7 +11,7 @@ pub struct Form {
 
 impl Form {
     
-    pub async fn send_email(&self) {
+    pub async fn send_email(&self) -> String {
         tracing_subscriber::fmt::init();
         let body = String::from(format!("Message:\n From: {}({}) \n {}", self.name, self.email, self.message));
         let email = Message::builder()
@@ -34,8 +34,8 @@ impl Form {
 
         // Send the email
         match mailer.send(email).await {
-            Ok(_) => println!("Email sent successfully!"),
-            Err(e) => panic!("Could not send email: {e:?}"),
+            Ok(_) => "Email sent successfully!".into(),
+            Err(e) => format!("Could not send email: {e:?}"),
         }
     }
 }
