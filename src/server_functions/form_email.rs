@@ -35,7 +35,7 @@ impl Form {
         // Send the email
         match mailer.send(email).await {
             Ok(_) => "Email sent successfully!".into(),
-            Err(e) => format!("Could not send email: {e:?}"),
+            Err(e) => format!("Could not send email: {e:?}").into(),
         }
     }
 }
