@@ -1,6 +1,7 @@
 use crate::components::navigation::*;
-use crate::server_functions::posts::*;
+use crate::server_functions::{form_email::*, posts::*};
 use leptos::*;
+use leptos::html::Input;
 
 /// Renders the home page of your application.
 #[component]
@@ -28,6 +29,19 @@ pub fn HomePage() -> impl IntoView {
                     .collect_view()
             })
     };
+
+    let send_email_action = create_action(|input: &(String, String, String)| {
+        let form_to_send = Form {
+            name: input.0.clone(),
+            email: input.1.clone(),
+            message: input.2.clone()
+        };
+        async move { form_to_send.send_email().await }
+    });
+
+    let name_ref = create_node_ref::<Input>();
+    let email_ref = create_node_ref::<Input>();
+    let message_ref = create_node_ref::<Input>();
 
     view! {
         <section id="sidebar">
@@ -87,23 +101,32 @@ pub fn HomePage() -> impl IntoView {
                         <p>Have a project in mind? Contact us and lets chat!</p>
                         <div class="split style1">
                             <section>
-                                <form method="post" action="#">
+                                <form 
+                                    on:submit=move |ev| {
+                                        ev.prevent_default(); // don't reload the page...
+                                        let name = name_ref.get().expect("name should exist");
+                                        let email= email_ref.get().expect("email should exist");
+                                        let message = message_ref.get().expect("message should exist");
+                                        let form_vals = (name.value(), email.value(), message.value());
+                                        send_email_action.dispatch(form_vals);
+                                    }
+                                >
                                     <div class="fields">
                                         <div class="field half">
                                             <label for="name">Name</label>
-                                            <input type="text" name="name" id="name" />
+                                            <input type="text" name="name" node_ref="name_ref" />
                                         </div>
                                         <div class="field half">
                                             <label for="email">Email</label>
-                                            <input type="text" name="email" id="email" />
+                                            <input type="text" name="email" node_ref="email_ref" />
                                         </div>
                                         <div class="field">
                                             <label for="message">Message</label>
-                                            <textarea name="message" id="message" rows="5"></textarea>
+                                            <textarea name="message" node_ref="message_ref" rows="5"></textarea>
                                         </div>
                                     </div>
                                     <ul class="actions">
-                                        <li><a href="" class="button submit">Send Message</a></li>
+                                        <li><button type="submit" class="button submit">Send Message</button></li>
                                     </ul>
                                 </form>
                             </section>
