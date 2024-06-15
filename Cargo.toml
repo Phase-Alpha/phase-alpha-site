@@ -28,7 +28,7 @@ gray_matter = "0.2.6"
 pulldown-cmark = "0.9.3"
 serde = { version = "1.0.188", features = ["derive"] }
 chrono = "0.4.31"
-lettre = { version = "0.11.7", features = ["tokio1-native-tls", "builder", "smtp-transport"], default-features = false } 
+lettre = { version = "0.11.7", features = ["tokio1-native-tls", "builder", "smtp-transport"], default-features = false, optional = true} 
 tracing-subscriber = "0.3.18"
 
 [features]
@@ -43,6 +43,7 @@ ssr = [
     "leptos_meta/ssr",
     "leptos_router/ssr",
     "dep:tracing",
+    "dep:lettre",
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode

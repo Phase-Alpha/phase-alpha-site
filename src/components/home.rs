@@ -36,7 +36,7 @@ pub fn HomePage() -> impl IntoView {
             email: input.1.clone(),
             message: input.2.clone()
         };
-        async move { form_to_send.send_email().await }
+        async move { send_email(form_to_send).await }
     });
 
     let name_ref = create_node_ref::<Input>();
