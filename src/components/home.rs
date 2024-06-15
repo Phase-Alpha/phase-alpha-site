@@ -113,16 +113,22 @@ pub fn HomePage() -> impl IntoView {
                                 >
                                     <div class="fields">
                                         <div class="field half">
-                                            <label for="name">Name</label>
-                                            <input type="text" name="name" node_ref="name_ref" />
+                                            <label> 
+                                                "Name"
+                                                <input type="text" name="name" node_ref=name_ref />
+                                            </label>
                                         </div>
                                         <div class="field half">
-                                            <label for="email">Email</label>
-                                            <input type="text" name="email" node_ref="email_ref" />
+                                            <label> 
+                                                "Email"
+                                                <input type="text" name="email" node_ref=email_ref />
+                                            </label>
                                         </div>
                                         <div class="field">
-                                            <label for="message">Message</label>
-                                            <textarea name="message" node_ref="message_ref" rows="5"></textarea>
+                                            <label> 
+                                                "Message"
+                                                <input type="textarea" node_ref=message_ref rows="5" />
+                                            </label>
                                         </div>
                                     </div>
                                     <ul class="actions">
