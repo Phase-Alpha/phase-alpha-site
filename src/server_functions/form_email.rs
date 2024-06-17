@@ -9,7 +9,7 @@ pub struct Form {
 }
     
 // #[cfg(feature = "ssr")]
-#[server(SendEmail)]
+#[server(SendEmail, "/api")]
 pub async fn send_email(form: Form) -> Result<(), ServerFnError> {
 
     use lettre::{

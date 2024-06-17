@@ -30,14 +30,14 @@ pub fn HomePage() -> impl IntoView {
             })
     };
 
-    let send_email_action = create_action(|input: &(String, String, String)| {
-        let form_to_send = Form {
-            name: input.0.clone(),
-            email: input.1.clone(),
-            message: input.2.clone()
-        };
-        async move { send_email(form_to_send).await }
-    });
+    // let send_email_action = create_action(|input: &(String, String, String)| {
+    //     let form_to_send = Form {
+    //         name: input.0.clone(),
+    //         email: input.1.clone(),
+    //         message: input.2.clone()
+    //     };
+    //     async move { send_email(form_to_send).await }
+    // });
 
     let name_ref = create_node_ref::<Input>();
     let email_ref = create_node_ref::<Input>();
@@ -102,13 +102,15 @@ pub fn HomePage() -> impl IntoView {
                         <div class="split style1">
                             <section>
                                 <form 
-                                    on:submit=move |ev| {
+                                    on:click=move |ev| {
                                         ev.prevent_default(); // don't reload the page...
                                         let name = name_ref.get().expect("name should exist");
                                         let email= email_ref.get().expect("email should exist");
                                         let message = message_ref.get().expect("message should exist");
-                                        let form_vals = (name.value(), email.value(), message.value());
-                                        send_email_action.dispatch(form_vals);
+                                        let form_vals = Form { name: name.value(), email: email.value(), message: message.value() };
+                                        spawn_local(async {
+                                            let _ = send_email(form_vals).await;
+                                        });
                                     }
                                 >
                                     <div class="fields">
