@@ -1,23 +1,13 @@
 use leptos::*;
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Form {
-    pub name: String,
-    pub email: String,
-    pub message: String,
-}
     
-// #[cfg(feature = "ssr")]
 #[server(SendEmail, "/api")]
-pub async fn send_email(form: Form) -> Result<(), ServerFnError> {
+pub async fn send_email(name: String, email: String, message: String) -> Result<(), ServerFnError> {
 
     use lettre::{
         message::header::ContentType, transport::smtp::authentication::Credentials, AsyncSmtpTransport,
         AsyncTransport, Message, Tokio1Executor,
     };
-    tracing_subscriber::fmt::init();
-    let body = String::from(format!("Message:\n From: {}({}) \n {}", form.name, form.email, form.message));
+    let body = String::from(format!("Message:\n From: {}({}) \n {}", name, email, message));
     let email = Message::builder()
         .from("NoBody <nobody@domain.tld>".parse().unwrap())
         .reply_to("Yuin <yuin@domain.tld>".parse().unwrap())

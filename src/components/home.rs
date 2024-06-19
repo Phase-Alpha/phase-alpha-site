@@ -1,7 +1,7 @@
 use crate::components::navigation::*;
 use crate::server_functions::{form_email::*, posts::*};
 use leptos::*;
-use leptos::html::Input;
+use leptos_router::ActionForm;
 
 /// Renders the home page of your application.
 #[component]
@@ -30,18 +30,8 @@ pub fn HomePage() -> impl IntoView {
             })
     };
 
-    // let send_email_action = create_action(|input: &(String, String, String)| {
-    //     let form_to_send = Form {
-    //         name: input.0.clone(),
-    //         email: input.1.clone(),
-    //         message: input.2.clone()
-    //     };
-    //     async move { send_email(form_to_send).await }
-    // });
-
-    let name_ref = create_node_ref::<Input>();
-    let email_ref = create_node_ref::<Input>();
-    let message_ref = create_node_ref::<Input>();
+    let send_email = create_server_action::<SendEmail>();
+    let value = send_email.value();
 
     view! {
         <section id="sidebar">
@@ -101,42 +91,38 @@ pub fn HomePage() -> impl IntoView {
                         <p>Have a project in mind? Contact us and lets chat!</p>
                         <div class="split style1">
                             <section>
-                                <form 
-                                    on:click=move |ev| {
-                                        ev.prevent_default(); // don't reload the page...
-                                        let name = name_ref.get().expect("name should exist");
-                                        let email= email_ref.get().expect("email should exist");
-                                        let message = message_ref.get().expect("message should exist");
-                                        let form_vals = Form { name: name.value(), email: email.value(), message: message.value() };
-                                        spawn_local(async {
-                                            let _ = send_email(form_vals).await;
-                                        });
-                                    }
-                                >
+                                <ActionForm action=send_email> 
+                                
                                     <div class="fields">
                                         <div class="field half">
                                             <label> 
                                                 "Name"
-                                                <input type="text" name="name" node_ref=name_ref />
+                                                <input type="text" name="name" />
                                             </label>
                                         </div>
                                         <div class="field half">
                                             <label> 
                                                 "Email"
-                                                <input type="text" name="email" node_ref=email_ref />
+                                                <input type="text" name="email" />
                                             </label>
                                         </div>
                                         <div class="field">
                                             <label> 
                                                 "Message"
-                                                <input type="textarea" node_ref=message_ref rows="5" />
+                                                <input type="text"  name="message" rows="5" />
                                             </label>
                                         </div>
                                     </div>
                                     <ul class="actions">
                                         <li><button type="submit" class="button submit">Send Message</button></li>
                                     </ul>
-                                </form>
+                                </ActionForm>
+                                <Show when=send_email.pending()>
+                                    <div>"Loading..."</div>
+                                </Show>
+                                <Show when=move || value.with(Option::is_some)>
+                                    <div>{value}</div>
+                                </Show>
                             </section>
                             <section>
                                 <ul class="contact">
