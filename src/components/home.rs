@@ -109,7 +109,7 @@ pub fn HomePage() -> impl IntoView {
                                         <div class="field">
                                             <label> 
                                                 "Message"
-                                                <input type="text"  name="message" rows="5" />
+                                                <textarea type="text"  name="message" rows="5" />
                                             </label>
                                         </div>
                                     </div>
