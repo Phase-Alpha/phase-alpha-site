@@ -91,23 +91,23 @@ pub fn HomePage() -> impl IntoView {
                         <p>Have a project in mind? Contact us and lets chat!</p>
                         <div class="split style1">
                             <section>
-                                <ActionForm action=send_email> 
-                                
+                                <ActionForm action=send_email>
+
                                     <div class="fields">
                                         <div class="field half">
-                                            <label> 
+                                            <label>
                                                 "Name"
                                                 <input type="text" name="name" />
                                             </label>
                                         </div>
                                         <div class="field half">
-                                            <label> 
+                                            <label>
                                                 "Email"
                                                 <input type="text" name="email" />
                                             </label>
                                         </div>
                                         <div class="field">
-                                            <label> 
+                                            <label>
                                                 "Message"
                                                 <textarea type="text"  name="message" rows="5" />
                                             </label>

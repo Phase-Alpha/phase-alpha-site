@@ -1,17 +1,28 @@
 use leptos::*;
-use std::env;
-    
+
 #[server(SendEmail, "/api")]
 pub async fn send_email(name: String, email: String, message: String) -> Result<(), ServerFnError> {
-
+    use dotenv::dotenv;
     use lettre::{
-        message::header::ContentType, transport::smtp::authentication::Credentials, AsyncSmtpTransport,
-        AsyncTransport, Message, Tokio1Executor,
+        message::header::ContentType, message::Mailbox,
+        transport::smtp::authentication::Credentials, AsyncSmtpTransport, AsyncTransport, Message,
+        Tokio1Executor,
     };
-    let body = String::from(format!("Message:\n From: {}({}) \n {}", name, email, message));
+    use std::env;
+
+    dotenv().ok();
+
+    let body = String::from(format!(
+        "Message:\n From: {}({}) \n {}",
+        name, email, message
+    ));
     let email = Message::builder()
-        .from("NoBody <nobody@domain.tld>".parse().unwrap())
-        .reply_to("Yuin <yuin@domain.tld>".parse().unwrap())
+        .from(
+            env::var("FROM_EMAIL")
+                .expect("FROM_EMAIL env variable should be set")
+                .parse::<Mailbox>()
+                .unwrap(),
+        )
         .to("Hei <hei@domain.tld>".parse().unwrap())
         .subject("Happy new async year")
         .header(ContentType::TEXT_PLAIN)
@@ -33,4 +44,3 @@ pub async fn send_email(name: String, email: String, message: String) -> Result<
         Err(e) => Err(ServerFnError::ServerError(e.to_string())),
     }
 }
-
