@@ -8,7 +8,6 @@ pub fn Blog() -> impl IntoView {
     // load the posts
     let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
         .expect("unable to find context");
-    // let posts = create_resource(|| (), |_| async { get_posts("./posts/".to_string()).await });
     let posts_view = move || {
         posts.and_then(|posts| {
                 posts.iter()
