@@ -15,7 +15,7 @@ pub fn Services() -> impl IntoView {
                 <section id="main" class="wrapper">
                     <div class="inner">
                         <h1 class="major">Services</h1>
-                        <span class="image fit"><img src="pic04.jpg" alt="" /></span>
+                        <span class="image fit"><img src="services.png" alt="" /></span>
                         <p>At PhaseAlpha, our specialties and interests transcend industry boundaries.</p>
                         <p>With our main branches; technical, and creative,
                         we can help you realise your vision.</p>
