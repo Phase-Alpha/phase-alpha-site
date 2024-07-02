@@ -1,0 +1,11 @@
+services:
+  web:
+    image: ghcr.io/jigypeper/phase-alpha-site:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - RUST_LOG=info
+      - LEPTOS_OUTPUT_NAME=phase-alpha-site
+      - APP_ENVIRONMENT=production
+      - LEPTOS_SITE_ADDR=0.0.0.0:3000
+      - LEPTOS_SITE_ROOT=site

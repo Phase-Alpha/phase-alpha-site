@@ -1,41 +1,44 @@
-name: Deploy to Server
+name: publish
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.actor }}/<image-name>:latest
 
 jobs:
-  build-and-deploy:
+  publish:
+    name: Publish Image
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
+      - uses: actions/checkout@v3
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_USERNAME }}
-          password: ${{ secrets.GHCR_TOKEN }}
-
-      - name: Build and push Docker image
         run: |
-          docker buildx build --platform linux/amd64 --push -t ghcr.io/${{ secrets.GHCR_USERNAME }}/phase-alpha-site:latest .
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build and Publish Docker Image
+        run: |
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker pull ghcr.io/${{ secrets.GHCR_USERNAME }}/phase-alpha-site:latest
-            docker stop my-rust-app-container || true
-            docker rm my-rust-app-container || true
-            docker run -d -p 3000:3000 --name pa-site-container ghcr.io/${{ secrets.GHCR_USERNAME }}/phase-alpha-site:latest
+  deploy:
+    needs: publish
+    name: Deploy Image
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Install SSH Keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: Copy Docker Compose File
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}/docker-compose.yml
+      - name: Connect and Deploy
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d"
+      - name: Cleanup SSH Keys
+        run: rm -rf ~/.ssh
