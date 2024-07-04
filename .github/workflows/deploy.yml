@@ -47,7 +47,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa.pub
           
           echo "Adding SSH host to known_hosts"
-          if ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts 2>&1; then
+          if ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>&1; then
             echo "Successfully added SSH host to known_hosts"
           else
             echo "Failed to add SSH host to known_hosts"
