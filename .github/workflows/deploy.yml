@@ -51,22 +51,6 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
           
       - name: Connect and Deploy
-        run: |
-          ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            set -euxo pipefail
-
-            # cd to dir
-            cd pa-site
-            
-            # Pull the latest image
-            docker compose pull
-
-            # start it
-            docker compose up -d
-
-            # exit
-            exit
-          
-          EOF
+        run: ssh -t -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd pa-site && docker compose pull && docker compose up -d && exit
       - name: Cleanup SSH Keys
         run: rm -rf ~/.ssh
