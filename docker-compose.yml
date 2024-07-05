@@ -1,8 +1,11 @@
 services:
   web:
     image: ghcr.io/jigypeper/phase-alpha-site:latest
+    container_name: pa-site
     ports:
-      - "3000:3000"
+      - "80:3000"
+    volumes:
+      - /pa-site/.env:/app
     environment:
       - RUST_LOG=info
       - LEPTOS_OUTPUT_NAME=phase-alpha-site
