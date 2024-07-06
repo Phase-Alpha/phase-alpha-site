@@ -23,34 +23,3 @@ jobs:
         run: |
           docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-  deploy:
-    needs: publish
-    name: Deploy Image
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Install SSH Keys
-        run: |
-          
-          echo "Creating .ssh directory"
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          
-          echo "Writing private key to id_rsa"
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          echo "Writing public key to id_rsa.pub"
-          echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa.pub
-          
-          echo "Adding SSH host to known_hosts"
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
-          
-          chmod 644 ~/.ssh/known_hosts
-          
-      - name: Connect and Deploy
-        run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd pa-site && docker compose pull && docker compose up -d && exit"
-      - name: Cleanup SSH Keys
-        run: rm -rf ~/.ssh
