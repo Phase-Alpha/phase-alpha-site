@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /pa-site/.env:/app/.env
+      - .env:/app/.env
     environment:
       - RUST_LOG=info
       - LEPTOS_OUTPUT_NAME=phase-alpha-site
