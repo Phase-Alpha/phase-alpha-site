@@ -7,6 +7,7 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     use serde::{Deserialize, Serialize};
     use uuid::Uuid;
     use std::env;
+    use axum::{response::{Redirect, IntoResponse}, extract::Path, http::StatusCode};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct UrlRequest {
@@ -50,7 +51,6 @@ cfg_if! { if #[cfg(feature = "ssr")] {
 
     async fn get_redis_client() -> Result<Client, RedisError> {
         Client::open("redis://127.0.0.1/")
-            // .map_err(|e| RedisError::from((redis::ErrorKind::ClientError, &e.to_string())))
     }
 
     #[server(ShortenUrl, "/api")]
@@ -98,7 +98,6 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     pub async fn resolve_url(uuid: String) -> Result<String, ServerFnError> {
         let redis_client = get_redis_client()
             .await?;
-            // .map_err(ServerFnError::ServerError)?;
         let mut con = redis_client
             .get_multiplexed_async_connection()
             .await
@@ -110,6 +109,22 @@ cfg_if! { if #[cfg(feature = "ssr")] {
         fetch_url_from_redis(&uuid, &mut con)
             .await
             .map_err(|e| ServerFnError::ServerError(format!("{}", e.to_string())))
+    }
+
+    pub async fn redirect(
+        uuid: String,
+    ) -> Result<Redirect, StatusCode> {
+        // Get Redis client
+        let redis_client = get_redis_client().await.unwrap();
+        let mut con = redis_client.get_multiplexed_async_connection().await.unwrap();
+
+        // Fetch the URL from Redis
+        let url = fetch_url_from_redis(&uuid, &mut con).await;
+
+        match url {
+            Ok(long_url) => Ok(Redirect::to(&long_url)),
+            Err(_) => Err(StatusCode::NOT_FOUND),  // Handle error if the URL is not found
+        }
     }
 }}
 
