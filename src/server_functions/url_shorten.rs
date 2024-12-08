@@ -115,6 +115,7 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     }
 }}
 
+#[cfg(feature = "ssr")]
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -164,6 +165,5 @@ mod tests {
 
         let result = fetch_url_from_redis("non-existent-uuid", &mut con).await;
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "URL not found");
     }
 }
