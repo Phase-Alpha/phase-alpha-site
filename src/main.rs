@@ -9,7 +9,7 @@ async fn main() {
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use phase_alpha_site::app::*;
     use phase_alpha_site::fileserv::file_and_error_handler;
-    use phase_alpha_site::server_functions::url_shorten::redirect;
+    use phase_alpha_site::server_functions::url_shorten::{redirect, shorten_url};
 
     simple_logger::init_with_level(log::Level::Debug).expect("couldn't initialize logging");
 
@@ -25,6 +25,7 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
+        .route("/shorten_url", post(shorten_url))
         .route("/short/:uuid", get(redirect))
         .route("/api/*fn_name", post(leptos_axum::handle_server_fns))
         .leptos_routes(&leptos_options, routes, App)
