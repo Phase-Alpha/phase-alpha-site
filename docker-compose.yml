@@ -20,7 +20,7 @@ services:
     container_name: redis
     volumes:
       - redis_data:/data
-      - redis.conf:/app/redis.conf
+      - ./redis.conf:/app/redis.conf
     command: ["redis-server", "/app/redis.conf"]
     ports:
       - "6379:6379"
