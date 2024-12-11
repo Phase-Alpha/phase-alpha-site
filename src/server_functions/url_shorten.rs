@@ -50,7 +50,7 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     }
 
     async fn get_redis_client() -> Result<Client, RedisError> {
-        Client::open("redis://127.0.0.1/")
+        Client::open("redis://redis:6379/")
     }
 
     pub async fn shorten_url(
