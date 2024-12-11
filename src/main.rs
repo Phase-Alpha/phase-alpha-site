@@ -25,7 +25,7 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
-        .route("/:uuid", get(redirect))
+        .route("/short/:uuid", get(redirect))
         .route("/api/*fn_name", post(leptos_axum::handle_server_fns))
         .leptos_routes(&leptos_options, routes, App)
         .fallback(file_and_error_handler)
