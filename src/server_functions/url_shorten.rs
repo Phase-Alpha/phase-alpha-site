@@ -8,7 +8,7 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     use uuid::Uuid;
     use dotenv::dotenv;
     use std::env;
-    use axum::{response::{Redirect, IntoResponse}, extract::Json, http::{HeaderMap, StatusCode}};
+    use axum::{response::{Redirect, IntoResponse}, extract::{Path, Json}, http::{HeaderMap, StatusCode}};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct UrlRequest {
@@ -92,7 +92,7 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     }
 
     pub async fn redirect(
-        uuid: String,
+        Path(uuid): Path<String>
     ) -> Result<Redirect, StatusCode> {
         let redis_client = get_redis_client().await.unwrap();
         let mut con = redis_client.get_multiplexed_async_connection().await.unwrap();
