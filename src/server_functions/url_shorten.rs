@@ -6,8 +6,9 @@ cfg_if! { if #[cfg(feature = "ssr")] {
     use redis::{aio::MultiplexedConnection, Client, RedisError};
     use serde::{Deserialize, Serialize};
     use uuid::Uuid;
+    use dotenv::dotenv;
     use std::env;
-    use axum::{response::{Redirect, IntoResponse}, extract::Path, http::StatusCode};
+    use axum::{response::{Redirect, IntoResponse}, extract::Json, http::{HeaderMap, StatusCode}};
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
     pub struct UrlRequest {
@@ -44,7 +45,6 @@ cfg_if! { if #[cfg(feature = "ssr")] {
             .arg(uuid)
             .query_async(con)
             .await?;
-            // .map_err(|e| format!("Redis query error: {e}"))?;
 
             url.ok_or_else(|| RedisError::from((redis::ErrorKind::ResponseError, "URL not found")))
     }
@@ -53,77 +53,55 @@ cfg_if! { if #[cfg(feature = "ssr")] {
         Client::open("redis://127.0.0.1/")
     }
 
-    #[server(ShortenUrl, "/api")]
-    pub async fn shorten_url(req: UrlRequest) -> Result<UrlResponse, ServerFnError> {
-        use dotenv::dotenv;
-        use axum::{extract::FromRequestParts, http::{Method, HeaderMap}};
-        use leptos_axum::extract;
+    pub async fn shorten_url(
+        headers: HeaderMap,
+        Json(req): Json<UrlRequest>,
+    ) -> impl IntoResponse {
 
         dotenv().ok();
 
-        let url_api: String = env::var("URL_KEY").expect("URL API Key should be set");
-        let api_key = extract(|headers: HeaderMap| async move {
-                headers
-                    .get("x-api-key")
-                    .and_then(|value| value.to_str().ok())
-                    .map(|key| key.to_string())
-                    .ok_or_else(|| ServerFnError::ServerError("Missing API key".to_string()))
-            })
-            .await.unwrap();
+        let expected_api_key = match env::var("URL_KEY") {
+            Ok(key) => key,
+            Err(_) => return (StatusCode::INTERNAL_SERVER_ERROR, "Server misconfiguration: Missing API key".to_string()),
+        };
 
-        if api_key != Ok(url_api) {
-            log::error!("Invalid API key: {}", api_key.unwrap());
-            return Err(ServerFnError::ServerError("Invalid API key.".into()));
+        let provided_api_key = headers
+            .get("x-api-key")
+            .and_then(|value| value.to_str().ok());
+
+        if provided_api_key != Some(expected_api_key.as_str()) {
+            return (StatusCode::UNAUTHORIZED, "Invalid or missing API key".to_string());
         }
 
-        let redis_client = get_redis_client()
-            .await
-            .map_err(|e| ServerFnError::ServerError(format!("{}", e.to_string())))?;
-        let mut con = redis_client
-            .get_multiplexed_async_connection()
-            .await
-            .map_err(|e| {
-                log::error!("Redis connection error: {e}");
-                ServerFnError::ServerError("Database connection failed.".into())
-            })?;
+        let redis_client = match get_redis_client().await {
+            Ok(client) => client,
+            Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Redis client error: {}", e)),
+        };
 
-        let uuid = store_url_in_redis(&req.url, &mut con)
-            .await
-            .map_err(|e| ServerFnError::ServerError(format!("{}", e.to_string())))?;
+        let mut con = match redis_client.get_multiplexed_async_connection().await {
+            Ok(con) => con,
+            Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Redis connection error: {}", e)),
+        };
 
-        Ok(UrlResponse { uuid })
-    }
+        let uuid = match store_url_in_redis(&req.url, &mut con).await {
+            Ok(uuid) => uuid,
+            Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, format!("Redis store error: {}", e)),
+        };
 
-    #[server(ResolveUrl, "/api")]
-    pub async fn resolve_url(uuid: String) -> Result<String, ServerFnError> {
-        let redis_client = get_redis_client()
-            .await?;
-        let mut con = redis_client
-            .get_multiplexed_async_connection()
-            .await
-            .map_err(|e| {
-                log::error!("Redis connection error: {e}");
-                ServerFnError::ServerError(format!("Database connection failed: {}", e.to_string()))
-            })?;
-
-        fetch_url_from_redis(&uuid, &mut con)
-            .await
-            .map_err(|e| ServerFnError::ServerError(format!("{}", e.to_string())))
+        (StatusCode::OK, uuid)
     }
 
     pub async fn redirect(
         uuid: String,
     ) -> Result<Redirect, StatusCode> {
-        // Get Redis client
         let redis_client = get_redis_client().await.unwrap();
         let mut con = redis_client.get_multiplexed_async_connection().await.unwrap();
 
-        // Fetch the URL from Redis
         let url = fetch_url_from_redis(&uuid, &mut con).await;
 
         match url {
             Ok(long_url) => Ok(Redirect::to(&long_url)),
-            Err(_) => Err(StatusCode::NOT_FOUND),  // Handle error if the URL is not found
+            Err(_) => Err(StatusCode::NOT_FOUND),
         }
     }
 }}
