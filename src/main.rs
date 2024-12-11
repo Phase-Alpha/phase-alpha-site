@@ -1,11 +1,15 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::{routing::post, Router};
+    use axum::{
+        routing::{get, post},
+        Router,
+    };
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use phase_alpha_site::app::*;
     use phase_alpha_site::fileserv::file_and_error_handler;
+    use phase_alpha_site::server_functions::url_shorten::redirect;
 
     simple_logger::init_with_level(log::Level::Debug).expect("couldn't initialize logging");
 
@@ -21,6 +25,7 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
+        .route("/:uuid", get(redirect))
         .route("/api/*fn_name", post(leptos_axum::handle_server_fns))
         .leptos_routes(&leptos_options, routes, App)
         .fallback(file_and_error_handler)

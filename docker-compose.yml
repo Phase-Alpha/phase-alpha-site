@@ -12,3 +12,18 @@ services:
       - APP_ENVIRONMENT=production
       - LEPTOS_SITE_ADDR=0.0.0.0:3000
       - LEPTOS_SITE_ROOT=site
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - redis_data:/data
+      - redis.conf:/app/redis.conf
+    command: ["redis-server", "/app/redis.conf"]
+    ports:
+      - "6379:6379"
+
+volumes:
+  redis_data:
