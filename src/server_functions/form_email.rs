@@ -1,4 +1,4 @@
-use leptos::*;
+use leptos::prelude::*;
 
 #[server(SendEmail, "/api")]
 pub async fn send_email(name: String, email: String, message: String) -> Result<(), ServerFnError> {

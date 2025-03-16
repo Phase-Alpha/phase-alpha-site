@@ -1,36 +1,43 @@
 use crate::components::navigation::*;
 use crate::server_functions::{form_email::*, posts::*};
-use leptos::*;
-use leptos_router::ActionForm;
-
+// use leptos::html::Div;
+use leptos::prelude::*;
+use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
+use leptos_router::{
+    components::{Route, Router, Routes},
+    StaticSegment,
+};
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
-        .expect("unable to find context");
+    let posts = use_context::<Result<Vec<Post>, ServerFnError>>().expect("unable to find context");
 
-    let posts_view = move || {
-        posts.and_then(|posts| {
-                posts[0..=2].iter()
-                    .map(|post| view! {
-                        <section>
-                            <img src={&post.meta_data.image_path} alt="" data-position="center center"  class="image"/>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>{&post.meta_data.title}</h2>
-                                    <p>{&post.meta_data.description}</p>
-                                    <ul class="actions">
-                                        <li><a href=format!("/blog/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
+    let posts_view = view! {
+            {move || {
+                let posts = posts.clone();
+                posts
+                    .map(|posts| {
+                        posts[0..=2].iter()
+                            .map(|post| view! {
+                                <section>
+                                    <img src={post.meta_data.image_path.clone()} alt="" data-position="center center" class="image"/>
+                                    <div class="content">
+                                        <div class="inner">
+                                            <h2>{post.meta_data.title.clone()}</h2>
+                                            <p>{post.meta_data.description.clone()}</p>
+                                            <ul class="actions">
+                                                <li><a href=format!("/blog/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                            })
+                            .collect_view()
                     })
-                    .collect_view()
-            })
+            }}
     };
 
-    let send_email = create_server_action::<SendEmail>();
+    let send_email = ServerAction::<SendEmail>::new();
     let value = send_email.value();
 
     view! {

@@ -1,7 +1,7 @@
 #[allow(unused)]
 use chrono::NaiveDate;
 use gray_matter::{engine::YAML, Matter};
-use leptos::*;
+use leptos::prelude::*;
 use pulldown_cmark::{html, Options, Parser};
 use serde::{Deserialize, Serialize};
 use std::fs;
