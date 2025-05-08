@@ -1,7 +1,7 @@
 use crate::components::*;
 use crate::server_functions::posts::*;
 use leptos::prelude::*;
-use leptos_meta::*;
+use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
@@ -30,19 +30,13 @@ pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
 
-    let posts = Resource::new(
-        || (),
-        |_| async move { get_posts("posts/".to_string()).await },
-    );
-    provide_context(posts);
-
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="x/pkg/phase-alpha-site.css"/>
+        <Stylesheet id="leptos" href="/pkg/phase-alpha-site.css"/>
 
         // sets the document title
-        <Title text="Welcome to PhaseAlpha"/>
+        <Title text="Welcome to Phase Alpha"/>
 
         // content for this welcome page
         <Router>
@@ -55,5 +49,18 @@ pub fn App() -> impl IntoView {
                 </Routes>
             </main>
         </Router>
+    }
+}
+
+/// Renders the home page of your application.
+#[component]
+fn HomePage() -> impl IntoView {
+    // Creates a reactive value to update the button
+    let count = RwSignal::new(0);
+    let on_click = move |_| *count.write() += 1;
+
+    view! {
+        <h1>"Welcome to Leptos!"</h1>
+        <button on:click=on_click>"Click Me: " {count}</button>
     }
 }

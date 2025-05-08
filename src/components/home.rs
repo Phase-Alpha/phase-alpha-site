@@ -1,12 +1,22 @@
 use crate::components::navigation::*;
 use crate::server_functions::{form_email::*, posts::*};
-use leptos::*;
-use leptos_router::ActionForm;
-
+// use leptos::html::Div;
+use leptos::prelude::*;
+use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
+use leptos_router::{
+    components::{Route, Router, Routes},
+    StaticSegment,
+};
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
+    let posts = Resource::new(
+        || (),
+        |_| async move { get_posts("posts/".to_string()).await },
+    );
+    provide_context(posts);
+
+    let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>()
         .expect("unable to find context");
 
     let posts_view = move || {
@@ -29,8 +39,7 @@ pub fn HomePage() -> impl IntoView {
                     .collect_view()
             })
     };
-
-    let send_email = create_server_action::<SendEmail>();
+    let send_email = ServerAction::<SendEmail>::new();
     let value = send_email.value();
 
     view! {
