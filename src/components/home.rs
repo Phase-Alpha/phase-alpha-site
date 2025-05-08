@@ -10,33 +10,52 @@ use leptos_router::{
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = use_context::<Result<Vec<Post>, ServerFnError>>().expect("unable to find context");
+    let posts = Resource::new(
+        || (),
+        |_| async move { get_posts("posts/".to_string()).await },
+    );
+    // provide_context(posts);
+
+    // let posts = use_context::<Result<Vec<Post>, ServerFnError>>().expect("unable to find context");
 
     let posts_view = view! {
+        <Transition fallback=move || view! { <p>"Loading..."</p> }>
             {move || {
-                let posts = posts.clone();
-                posts
-                    .map(|posts| {
-                        posts[0..=2].iter()
-                            .map(|post| view! {
-                                <section>
-                                    <img src={post.meta_data.image_path.clone()} alt="" data-position="center center" class="image"/>
-                                    <div class="content">
-                                        <div class="inner">
-                                            <h2>{post.meta_data.title.clone()}</h2>
-                                            <p>{post.meta_data.description.clone()}</p>
-                                            <ul class="actions">
-                                                <li><a href=format!("/blog/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </section>
-                            })
-                            .collect_view()
+                posts.get()
+                    .map(|posts_result| match posts_result {
+                        Err(e) => {
+                            view! {
+                                <div><p>{format!("Server Error: {}", e)}</p></div>
+                            }.into_any()
+                        }
+                        Ok(posts) => {
+                            view! {
+                                <div>
+                                    {
+                                        posts[0..=2]
+                                            .iter()
+                                            .map(|post| {
+                                                view! {
+                                                    <section>
+                                                        <h2>{post.meta_data.title.clone()}</h2>
+                                                        <p>{post.meta_data.description.clone()}</p>
+                                                    </section>
+                                                }
+                                            })
+                                            .collect_view()
+                                    }
+                                </div>
+                            }.into_any()
+                        }
+                    })
+                    .unwrap_or_else(|| {
+                        view! {
+                            <div><p>"Unexpected error"</p></div>
+                        }.into_any()
                     })
             }}
+        </Transition>
     };
-
     let send_email = ServerAction::<SendEmail>::new();
     let value = send_email.value();
 
