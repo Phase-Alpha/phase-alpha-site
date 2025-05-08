@@ -1,0 +1,29 @@
+services:
+  web:
+    image: ghcr.io/jigypeper/phase-alpha-site:latest
+    container_name: pa-site
+    ports:
+      - "3000:3000"
+    volumes:
+      - .env:/app/.env
+    environment:
+      - RUST_LOG=info
+      - LEPTOS_OUTPUT_NAME=phase-alpha-site
+      - APP_ENVIRONMENT=production
+      - LEPTOS_SITE_ADDR=0.0.0.0:3000
+      - LEPTOS_SITE_ROOT=site
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/app/redis.conf
+    command: ["redis-server", "/app/redis.conf"]
+    ports:
+      - "6379:6379"
+
+volumes:
+  redis_data:
