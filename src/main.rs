@@ -1,7 +1,7 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::Router;
+    use axum::{Router, routing::{post, get}};
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
@@ -16,7 +16,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/shorten_url", post(shorten_url))
-        .route("/short/:uuid", get(redirect))
+        .route("/short/{uuid}", get(redirect))
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())

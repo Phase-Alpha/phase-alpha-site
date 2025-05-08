@@ -29,6 +29,15 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    
+    // Create and provide the resource with the correct type for blog pages
+    let posts = Resource::new(
+        || (),
+        |_| async move { get_posts("posts/".to_string()).await },
+    );
+
+    // Provide the resource to context
+    provide_context(posts);
 
     view! {
         // injects a stylesheet into the document <head>
@@ -43,9 +52,9 @@ pub fn App() -> impl IntoView {
             <main>
                 <Routes fallback=|| "Page not found.".into_view()>
                     <Route path=StaticSegment("") view=home::HomePage/>
-                    <Route path=StaticSegment("/services") view=services::Services/>
-                    <Route path=StaticSegment("/blog") view=blog::Blog/>
-                    <Route path=StaticSegment("/blog/:post") view=blog::BlogPost/>
+                    <Route path=StaticSegment("services") view=services::Services/>
+                    <Route path=StaticSegment("blog") view=blog::Blog/>
+                    <Route path=StaticSegment("blog/{post}") view=blog::BlogPost/>
                 </Routes>
             </main>
         </Router>

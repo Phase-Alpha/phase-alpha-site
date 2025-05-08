@@ -16,7 +16,7 @@ pub struct PostMetadata {
 }
 
 impl PostMetadata {
-    pub fn create_href(self) -> String {
+    pub fn create_href(&self) -> String {
         self.title.replace(' ', "-").to_lowercase()
     }
 }
