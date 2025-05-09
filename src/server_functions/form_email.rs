@@ -1,7 +1,11 @@
 use leptos::prelude::*;
 
 #[server(SendEmail, "/api")]
-pub async fn send_email(name: String, email: String, message: String) -> Result<(), ServerFnError> {
+pub async fn send_email(
+    name: String,
+    email: String,
+    message: String,
+) -> Result<String, ServerFnError> {
     use dotenv::dotenv;
     use lettre::{
         message::header::ContentType, message::Mailbox,
@@ -46,7 +50,9 @@ pub async fn send_email(name: String, email: String, message: String) -> Result<
 
     // Send the email
     match mailer.send(email).await {
-        Ok(_) => Ok(()),
-        Err(e) => Err(ServerFnError::ServerError(e.to_string())),
+        Ok(_) => Ok(String::from("Message sent!")),
+        Err(_) => Err(ServerFnError::ServerError(
+            "Could not send message :(".to_string(),
+        )),
     }
 }
