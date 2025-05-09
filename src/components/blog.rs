@@ -56,12 +56,15 @@ pub fn Blog() -> impl IntoView {
 
 #[component]
 pub fn BlogPost() -> impl IntoView {
-    // Get posts resource from context
-    let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>().expect("unable to find posts resource");
-    
     // Get route parameters
     let params = use_params_map();
-    let post_slug = move || params.with(|params| params.get("post").unwrap_or_default().to_string());
+    let post_slug = move || params.with(|params| {
+        params.get("post").unwrap_or_default().to_string()
+    });
+
+    // Get posts resource from context 
+    let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>()
+        .expect("posts resource should be provided");
 
     view! {
         <header id="header">
@@ -74,24 +77,45 @@ pub fn BlogPost() -> impl IntoView {
                 <div class="inner">
                     <Suspense fallback=move || view! { <p>"Loading post..."</p> }>
                         {move || {
+                            // Get the slug and clone it immediately to avoid lifetime issues
                             let slug = post_slug();
-                            match posts.get() {
-                                None => view! { <p>"Loading post..."</p> }.into_any(),
-                                Some(Err(_)) => view! { <p>"Error loading post"</p> }.into_any(),
-                                Some(Ok(all_posts)) => {
-                                    let found_post = all_posts.iter()
-                                        .find(|p| p.meta_data.create_href() == slug);
+                            
+                            // Capture a clone of the posts resource to avoid lifetime issues
+                            let posts_clone = posts.clone();
+                            
+                            // Find the specific post from the posts list
+                            match posts_clone.get() {
+                                None => view! { <p>"Loading posts..."</p> }.into_any(),
+                                Some(Err(e)) => view! { <p>"Error loading posts: "{e.to_string()}</p> }.into_any(),
+                                Some(Ok(posts_list)) => {
+                                    // Find the post with the matching slug
+                                    let post = posts_list.iter().find(|p| p.meta_data.create_href() == slug);
                                     
-                                    match found_post {
-                                        Some(post) => view! {
-                                            <h1 class="major">{post.meta_data.title.clone()}</h1>
-                                            <div inner_html=post.content.clone()/>
-                                        }.into_any(),
-                                        None => view! {
-                                            <h1 class="major">"Post not found"</h1>
-                                            <p>"Looking for: "{slug}</p>
-                                            <p><a href="/blog">"Back to blog list"</a></p>
-                                        }.into_any()
+                                    match post {
+                                        Some(post) => {
+                                            // Clone the post data to avoid lifetime issues
+                                            let title = post.meta_data.title.clone();
+                                            let content = post.content.clone();
+                                            
+                                            view! {
+                                                <div>
+                                                    <h1 class="major">{title}</h1>
+                                                    <div inner_html=content/>
+                                                </div>
+                                            }.into_any()
+                                        },
+                                        None => {
+                                            // Clone the slug to avoid lifetime issues
+                                            let slug_display = slug.clone();
+                                            
+                                            view! {
+                                                <div>
+                                                    <h1 class="major">"Post not found"</h1>
+                                                    <p>"Looking for: "{slug_display}</p>
+                                                    <p><a href="/blog">"Back to blog list"</a></p>
+                                                </div>
+                                            }.into_any()
+                                        }
                                     }
                                 }
                             }

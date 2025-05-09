@@ -4,7 +4,7 @@ use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
-    StaticSegment,
+    StaticSegment, path,
 };
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
@@ -54,7 +54,7 @@ pub fn App() -> impl IntoView {
                     <Route path=StaticSegment("") view=home::HomePage/>
                     <Route path=StaticSegment("services") view=services::Services/>
                     <Route path=StaticSegment("blog") view=blog::Blog/>
-                    <Route path=StaticSegment("blog/{post}") view=blog::BlogPost/>
+                    <Route path=path!("blog/:post") view=blog::BlogPost/>
                 </Routes>
             </main>
         </Router>
