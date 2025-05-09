@@ -11,7 +11,7 @@ permissions:
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  IMAGE_NAME: Phase-Alpha/phase-alpha-site:latest
+  IMAGE_NAME: phase-alpha/phase-alpha-site:latest
 
 jobs:
   publish:
