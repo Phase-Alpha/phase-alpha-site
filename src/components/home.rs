@@ -1,36 +1,53 @@
 use crate::components::navigation::*;
 use crate::server_functions::{form_email::*, posts::*};
-use leptos::*;
-use leptos_router::ActionForm;
-
+// use leptos::html::Div;
+use leptos::prelude::*;
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = use_context::<Resource<(), Result<Vec<Post>, ServerFnError>>>()
+    let posts = Resource::new(
+        || (),
+        |_| async move { get_posts("posts/".to_string()).await },
+    );
+    provide_context(posts);
+
+    let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>()
         .expect("unable to find context");
 
     let posts_view = move || {
         posts.and_then(|posts| {
-                posts[0..=2].iter()
-                    .map(|post| view! {
-                        <section>
-                            <img src={&post.meta_data.image_path} alt="" data-position="center center"  class="image"/>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>{&post.meta_data.title}</h2>
-                                    <p>{&post.meta_data.description}</p>
-                                    <ul class="actions">
-                                        <li><a href=format!("/blog/{}", post.meta_data.clone().create_href()) class="button">Read</a></li>
-                                    </ul>
+                // Limit to the first 3 posts and clone the necessary data
+                let preview_posts: Vec<_> = posts[0..=2].iter()
+                    .map(|post| {
+                        // Clone all data that will be used in the view to avoid lifetime issues
+                        let image_path = post.meta_data.image_path.clone();
+                        let title = post.meta_data.title.clone();
+                        let description = post.meta_data.description.clone();
+                        let href = format!("/blog/{}", post.meta_data.create_href());
+                        
+                        // Create the view with owned data
+                        view! {
+                            <section>
+                                <img src={image_path} alt="" data-position="center center" class="image"/>
+                                <div class="content">
+                                    <div class="inner">
+                                        <h2>{title}</h2>
+                                        <p>{description}</p>
+                                        <ul class="actions">
+                                            <li><a href={href} class="button">Read</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        }
                     })
-                    .collect_view()
+                    .collect();
+                
+                // Now collect the views
+                preview_posts.into_iter().collect_view()
             })
     };
-
-    let send_email = create_server_action::<SendEmail>();
+    let send_email = ServerAction::<SendEmail>::new();
     let value = send_email.value();
 
     view! {
@@ -64,7 +81,7 @@ pub fn HomePage() -> impl IntoView {
                 <section id="two" class="wrapper style3 fade-up">
                     <div class="inner">
                         <h2>What we do</h2>
-                        <p>At PhaseAlpha, our specialties and interests transcend industry boundaries.
+                        <p>At Phase Alpha, our specialties and interests transcend industry boundaries.
 
                         With our main branches; technical, and creative, we can help you realise your vision.</p>
                         <div class="features">
@@ -121,7 +138,7 @@ pub fn HomePage() -> impl IntoView {
                                     <div>"Loading..."</div>
                                 </Show>
                                 <Show when=move || value.with(Option::is_some)>
-                                    <div>{value}</div>
+                                    <div>{move || format!("{:?}", value.get())}</div>
                                 </Show>
                             </section>
                             <section>

@@ -1,7 +1,7 @@
 #[allow(unused)]
 use chrono::NaiveDate;
 use gray_matter::{engine::YAML, Matter};
-use leptos::*;
+use leptos::prelude::*;
 use pulldown_cmark::{html, Options, Parser};
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -16,7 +16,7 @@ pub struct PostMetadata {
 }
 
 impl PostMetadata {
-    pub fn create_href(self) -> String {
+    pub fn create_href(&self) -> String {
         self.title.replace(' ', "-").to_lowercase()
     }
 }
@@ -27,6 +27,18 @@ pub struct Post {
     pub meta_data: PostMetadata,
     pub content: String,
 }
+
+#[server(GetPostBySlug, "/api")]
+pub async fn get_post_by_slug(folder_path: String, slug: String) -> Result<Option<Post>, ServerFnError> {
+    let posts = read_markdown_files(folder_path);
+    let posts = order_posts(posts);
+    
+    let post = posts.into_iter()
+        .find(|p| p.meta_data.create_href() == slug);
+    
+    Ok(post)
+}
+
 
 // Read Markdown files from a folder and convert them to a vector of posts
 #[server(GetPosts, "/api")]

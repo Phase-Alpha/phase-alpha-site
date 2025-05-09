@@ -1,6 +1,5 @@
 use crate::components::navigation::*;
-use leptos::*;
-
+use leptos::prelude::*;
 #[component]
 pub fn Services() -> impl IntoView {
     view! {
@@ -16,7 +15,7 @@ pub fn Services() -> impl IntoView {
                     <div class="inner">
                         <h1 class="major">Services</h1>
                         <span class="image fit"><img src="services.png" alt="" /></span>
-                        <p>At PhaseAlpha, our specialties and interests transcend industry boundaries.</p>
+                        <p>At Phase Alpha, our specialties and interests transcend industry boundaries.</p>
                         <p>With our main branches; technical, and creative,
                         we can help you realise your vision.</p>
                         <p>Some of our previous work has involved:</p>

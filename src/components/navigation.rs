@@ -1,6 +1,5 @@
-use leptos::*;
-use leptos_router::A;
-
+use leptos::prelude::*;
+use leptos_router::components::A;
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum NavElements {
     Blog,
