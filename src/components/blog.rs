@@ -80,11 +80,8 @@ pub fn BlogPost() -> impl IntoView {
                             // Get the slug and clone it immediately to avoid lifetime issues
                             let slug = post_slug();
                             
-                            // Capture a clone of the posts resource to avoid lifetime issues
-                            let posts_clone = posts.clone();
-                            
                             // Find the specific post from the posts list
-                            match posts_clone.get() {
+                            match posts.get() {
                                 None => view! { <p>"Loading posts..."</p> }.into_any(),
                                 Some(Err(e)) => view! { <p>"Error loading posts: "{e.to_string()}</p> }.into_any(),
                                 Some(Ok(posts_list)) => {
