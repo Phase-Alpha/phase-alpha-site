@@ -5,12 +5,6 @@ use leptos::prelude::*;
 /// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = Resource::new(
-        || (),
-        |_| async move { get_posts("posts/".to_string()).await },
-    );
-    provide_context(posts);
-
     let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>()
         .expect("unable to find context");
 
