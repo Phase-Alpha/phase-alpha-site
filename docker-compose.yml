@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/jigypeper/phase-alpha-site:latest
+    image: ghcr.io/Phase-Alpha/phase-alpha-site:latest
     container_name: pa-site
     ports:
       - "3000:3000"
