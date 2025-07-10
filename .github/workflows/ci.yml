@@ -22,7 +22,7 @@ jobs:
           override: true
 
       - name: Run Clippy
-        run: cargo clippy -- -D warnings
+        run: rustup component add --toolchain nightly-x86_64-unknown-linux-gnu clippyi && cargo clippy -- -D warnings
 
   test:
     runs-on: ubuntu-latest
