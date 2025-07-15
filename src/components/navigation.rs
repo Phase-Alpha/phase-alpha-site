@@ -7,6 +7,7 @@ pub enum NavElements {
     About,
     Contact,
     Services,
+    Shop,
     None,
 }
 
@@ -18,11 +19,13 @@ pub fn Nav(exclude: Option<NavElements>, current_page: NavElements) -> impl Into
         (NavElements::Blog, "/blog", "BLOG"),
         (NavElements::About, "#two", "WHAT WE DO"),
         (NavElements::Contact, "#three", "GET IN TOUCH"),
+        (NavElements::Shop, "https://phaseatelier.etsy.com", "SHOP"),
     ];
 
     let nav_elements_other = vec![
         (NavElements::Home, "/", "HOME"),
         (NavElements::Blog, "/blog", "BLOG"),
+        (NavElements::Shop, "https://phaseatelier.etsy.com", "SHOP"),
     ];
 
     #[allow(clippy::needless_late_init)]
