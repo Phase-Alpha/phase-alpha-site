@@ -1,18 +1,41 @@
 # Stage 1: Build
 FROM rustlang/rust:nightly-bullseye as builder
 
-# Install cargo-leptos and add wasm32 target
+# Install cargo-leptos and add wasm32 target (cached unless base image changes)
 RUN cargo install --locked cargo-leptos && rustup target add wasm32-unknown-unknown
 
 # Create app directory and set it as the working directory
 RUN mkdir -p /app
 WORKDIR /app
 
-# Copy all files to the working directory
-COPY . .
+# Copy dependency files first (for dependency caching)
+COPY Cargo.toml Cargo.lock* ./
 
-# Update cargo and build the project
-RUN cargo update && cargo leptos build --release -vv
+# Create src directory and dummy files for dependency build
+RUN mkdir -p src
+RUN echo "fn main() {}" > src/main.rs
+RUN echo "" > src/lib.rs
+
+# Build dependencies only (this layer will be cached unless Cargo.toml changes)
+RUN cargo build --release --bin phase-alpha-site --features ssr
+RUN cargo build --release --lib --features hydrate --target wasm32-unknown-unknown
+
+# Remove dummy source files
+RUN rm -rf src
+
+# Copy source code (src/, style/, public/ - changes here won't rebuild deps)
+COPY src/ ./src/
+COPY style/ ./style/
+COPY public/ ./public/
+
+# Copy posts separately (new blog posts will only rebuild from this point)
+COPY posts/ ./posts/
+
+# Copy remaining config files
+COPY Cargo.toml ./
+
+# Build the actual project (only rebuilds if source or posts changed)
+RUN cargo leptos build --release
 
 # Stage 2: Runner
 FROM debian:bullseye-slim
