@@ -1,8 +1,20 @@
 # Stage 1: Build
 FROM rustlang/rust:nightly-bookworm as builder
 
-# Install cargo-leptos directly from pre-built ARM64 binary
-RUN wget -qO- https://github.com/leptos-rs/cargo-leptos/releases/latest/download/cargo-leptos-aarch64-unknown-linux-musl.tar.gz | tar -xzv -C /usr/local/cargo/bin/
+# Install cargo-binstall (ARM64 version) for easier cargo-leptos installation
+RUN wget https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-aarch64-unknown-linux-musl.tgz && \
+    tar -xvf cargo-binstall-aarch64-unknown-linux-musl.tgz && \
+    cp cargo-binstall /usr/local/cargo/bin && \
+    rm cargo-binstall-aarch64-unknown-linux-musl.tgz
+
+# Install required tools
+RUN apt-get update -y \
+  && apt-get install -y --no-install-recommends clang \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install cargo-leptos using pre-built binary
+RUN cargo binstall cargo-leptos -y
 
 # Add the WASM target
 RUN rustup target add wasm32-unknown-unknown
