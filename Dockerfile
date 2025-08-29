@@ -1,9 +1,11 @@
 # Stage 1: Build
-FROM rustlang/rust:nightly-bullseye as builder
+FROM rustlang/rust:nightly-bookworm as builder
 
-# Install cargo-leptos and add wasm32 target in one layer for better caching
-RUN rustup target add wasm32-unknown-unknown && \
-    cargo install --locked cargo-leptos --no-default-features
+# Install cargo-leptos directly from pre-built ARM64 binary
+RUN wget -qO- https://github.com/leptos-rs/cargo-leptos/releases/latest/download/cargo-leptos-aarch64-unknown-linux-musl.tar.gz | tar -xzv -C /usr/local/cargo/bin/
+
+# Add the WASM target
+RUN rustup target add wasm32-unknown-unknown
 
 # Create app directory and set it as the working directory
 RUN mkdir -p /app

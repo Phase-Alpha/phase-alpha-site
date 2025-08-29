@@ -47,7 +47,7 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}-arm64
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: |
             type=gha,scope=arm64-deps-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}
@@ -60,6 +60,7 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
           provenance: false
 
+<<<<<<< Updated upstream
   create-manifest:
     name: Create Multi-Arch Manifest
     runs-on: ubuntu-latest
@@ -85,3 +86,5 @@ jobs:
               --tag "$tag" \
               "$tag-arm64"
           done
+=======
+>>>>>>> Stashed changes
