@@ -59,32 +59,3 @@ jobs:
           build-args: |
             BUILDKIT_INLINE_CACHE=1
           provenance: false
-
-<<<<<<< Updated upstream
-  create-manifest:
-    name: Create Multi-Arch Manifest
-    runs-on: ubuntu-latest
-    needs: build-arm64
-    
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-            
-      - name: Create and push multi-arch manifest
-        run: |
-          # Get tags from the arm64 build job output
-          TAGS="${{ needs.build-arm64.outputs.tags }}"
-          
-          # Create manifest for tags
-          for tag in $TAGS; do
-            echo "Creating manifest for: $tag"
-            docker buildx imagetools create \
-              --tag "$tag" \
-              "$tag-arm64"
-          done
-=======
->>>>>>> Stashed changes
