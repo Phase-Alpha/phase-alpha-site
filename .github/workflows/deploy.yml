@@ -14,55 +14,6 @@ env:
   IMAGE_NAME: phase-alpha/phase-alpha-site
 
 jobs:
-  build-amd64:
-    name: Build AMD64 Image
-    runs-on: ubuntu-latest
-    outputs:
-      metadata: ${{ steps.meta.outputs.json }}
-      tags: ${{ steps.meta.outputs.tags }}
-    
-    steps:
-      - uses: actions/checkout@v5
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=raw,value=latest,enable={{is_default_branch}}
-            
-      - name: Build and push AMD64 image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}-amd64
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: |
-            type=gha,scope=amd64-deps-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}
-            type=gha,scope=amd64-${{ github.ref_name }}
-            type=gha,scope=amd64-main
-          cache-to: |
-            type=gha,mode=max,scope=amd64-deps-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}
-            type=gha,mode=max,scope=amd64-${{ github.ref_name }}
-          build-args: |
-            BUILDKIT_INLINE_CACHE=1
-          provenance: false
-
   build-arm64:
     name: Build ARM64 Image (Raspberry Pi)
     runs-on: ubuntu-latest
@@ -113,7 +64,7 @@ jobs:
   create-manifest:
     name: Create Multi-Arch Manifest
     runs-on: ubuntu-latest
-    needs: [build-amd64, build-arm64]
+    needs: build-arm64
     
     steps:
       - name: Login to GitHub Container Registry
@@ -125,15 +76,14 @@ jobs:
             
       - name: Create and push multi-arch manifest
         run: |
-          # Get tags from the amd64 build job output
-          TAGS="${{ needs.build-amd64.outputs.tags }}"
+          # Get tags from the arm64 build job output
+          TAGS="${{ needs.build-arm64.outputs.tags }}"
           
-          # Create multi-arch manifest for each tag
+          # Create manifest for tags
           for tag in $TAGS; do
             echo "Creating manifest for: $tag"
             docker buildx imagetools create \
               --tag "$tag" \
-              "$tag-amd64" \
               "$tag-arm64"
           done
 =======
