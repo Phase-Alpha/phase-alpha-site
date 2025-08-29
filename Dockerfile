@@ -1,8 +1,9 @@
 # Stage 1: Build
 FROM rustlang/rust:nightly-bullseye as builder
 
-# Install cargo-leptos and add wasm32 target (cached unless base image changes)
-RUN cargo install --locked cargo-leptos && rustup target add wasm32-unknown-unknown
+# Install cargo-leptos and add wasm32 target in one layer for better caching
+RUN rustup target add wasm32-unknown-unknown && \
+    cargo install --locked cargo-leptos --no-default-features
 
 # Create app directory and set it as the working directory
 RUN mkdir -p /app
@@ -16,9 +17,13 @@ RUN mkdir -p src
 RUN echo "fn main() {}" > src/main.rs
 RUN echo "" > src/lib.rs
 
+# Set environment variables for faster builds
+ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
 # Build dependencies only (this layer will be cached unless Cargo.toml changes)
-RUN cargo build --release --bin phase-alpha-site --features ssr
-RUN cargo build --release --lib --features hydrate --target wasm32-unknown-unknown
+RUN cargo build --release --bin phase-alpha-site --features ssr -j $(nproc)
+RUN cargo build --release --lib --features hydrate --target wasm32-unknown-unknown -j $(nproc)
 
 # Remove dummy source files
 RUN rm -rf src
