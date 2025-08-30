@@ -7,11 +7,15 @@ RUN wget https://github.com/cargo-bins/cargo-binstall/releases/latest/download/c
     cp cargo-binstall /usr/local/cargo/bin && \
     rm cargo-binstall-aarch64-unknown-linux-musl.tgz
 
-# Install required tools
+# Install required tools and Sass compiler
 RUN apt-get update -y \
-  && apt-get install -y --no-install-recommends clang \
+  && apt-get install -y --no-install-recommends clang wget curl \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && wget https://github.com/sass/dart-sass/releases/download/1.86.0/dart-sass-1.86.0-linux-arm64.tar.gz \
+  && tar -xzf dart-sass-1.86.0-linux-arm64.tar.gz \
+  && cp -r dart-sass/* /usr/local/bin/ \
+  && rm -rf dart-sass-1.86.0-linux-arm64.tar.gz dart-sass
 
 # Install cargo-leptos using pre-built binary
 RUN cargo binstall cargo-leptos -y
@@ -57,7 +61,7 @@ COPY Cargo.toml ./
 RUN cargo leptos build --release
 
 # Stage 2: Runner
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # Copy the necessary files from the builder stage to the runner stage
 COPY --from=builder /app/posts /app/posts
