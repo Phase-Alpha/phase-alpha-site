@@ -1,5 +1,5 @@
 ---
-title: Turkish Hospitality at 30,000 Feet (Well, Almost)
+title: Turkish Hospitality at 30000 Feet Almost
 description: Premium lounge experience at Istanbul Airport with the Platinum card upgrade
 date: 2024-08-28
 image_path: '/istanbul_lounge_thumb.jpeg'
