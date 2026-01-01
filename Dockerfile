@@ -1,5 +1,8 @@
 # Stage 1: Build
-FROM rustlang/rust:nightly-bookworm as builder
+FROM rustlang/rust:nightly-bookworm AS builder
+
+# Pin to specific nightly version for Leptos 0.8 compatibility
+RUN rustup default nightly-2025-08-31
 
 # Install cargo-binstall (ARM64 version) for easier cargo-leptos installation
 RUN wget https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-aarch64-unknown-linux-musl.tgz && \
@@ -28,7 +31,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 # Copy dependency files first (for dependency caching)
-COPY Cargo.toml Cargo.lock* ./
+COPY Cargo.toml Cargo.lock* rust-toolchain.toml ./
 
 # Create src directory and dummy files for dependency build
 RUN mkdir -p src
