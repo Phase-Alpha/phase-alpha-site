@@ -15,9 +15,11 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@stable
         with:
+          toolchain: nightly-2025-08-31
           components: clippy
+          targets: wasm32-unknown-unknown
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -46,7 +48,10 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly-2025-08-31
+          targets: wasm32-unknown-unknown
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
