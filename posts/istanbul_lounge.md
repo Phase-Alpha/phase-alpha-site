@@ -41,42 +41,16 @@ If you're still on the fence about upgrading your card or even getting lounge ac
 
 Well, technically we were still on the ground, but you get the idea.
 
-## The Platinum Card Benefits Breakdown
+## Which Card to Actually Start With
 
-While my Gold card provided lounge access, the Platinum card takes it to another level. Here's what the UK Platinum card offers that makes it worth the upgrade:
+Is the fee worth it? For how much I travel, the unlimited lounge access alone covers most of it, and the travel insurance, hotel status and car rental cover are the sort of thing I forget I have until the moment I need them. If you only pass through a lounge once or twice a year, the maths is harder to justify.
 
-### Travel Benefits
-- **Unlimited Lounge Access**: Unlike Gold's limited visits, Platinum gives you unlimited access to over 1,400 lounges worldwide through Priority Pass and Centurion Lounges
-- **Comprehensive Travel Insurance**: Worldwide family travel insurance that covers medical expenses, trip cancellations, and lost luggage
-- **Hotel Status**: Automatic elite status with Marriott Bonvoy, Hilton Honors, Radisson Rewards, and MeliaRewards programs
-- **Car Rental Benefits**: Elite status with Avis, and Hertz, plus insurance coverage (no need to buy the extra cover at the desk)
+Here is the part I wish someone had spelled out for me sooner though: you do not have to start at Gold or Platinum at all. Amex has a whole range of cards, including no-fee ones, and most come with a welcome bonus of their own. Apply through a referral link and the new cardholder gets an upgraded bonus while a few points come my way too, so it really is win win, same as it was back in Lisboa.
 
-### Lifestyle Benefits
-- **Concierge Service**: 24/7 personal assistance for restaurant reservations, event tickets, and travel planning
-- **Fine Hotels & Resorts Program**: Room upgrades, late checkout, complimentary breakfast, and property credits
-- **Exclusive Events**: Priority access to concerts, sporting events, and cultural experiences
-- **Dining Benefits**: Special access to restaurant reservations and dining experiences
+The catch worth knowing: you generally will not get the welcome bonus if you have held any personal Amex card in the previous 24 months. So it pays to be a little strategic about which one you open first rather than grabbing Platinum on a whim. Quite often a cheaper card hands you a better bonus for the spend, and you can always upgrade later once the lounge life gets its hooks into you.
 
-### Financial Benefits
-- **Purchase Protection**: Coverage for eligible items against damage or theft
-
-The annual fee is significantly higher than Gold, but for frequent travelers, the unlimited lounge access alone can offset much of that cost. Add in the hotel status benefits, comprehensive travel insurance, and concierge services, and the value proposition becomes clear for the right user.
-
-Speaking from experience, the Platinum upgrade has completely transformed how I travel. The Istanbul lounge experience is just one example of the premium benefits you can enjoy.
-
----
-
-## Ready to Start Your Lounge Journey?
-
-Whether you're ready to dive straight into the Platinum experience or prefer to start with the Gold card (which still gets you lounge access!), now is actually a fantastic time to apply. AMEX is currently running some impressive welcome bonuses:
-
-- **Gold Card**: 45,000 Membership Rewards points after hitting the minimum spend
-- **Platinum Card**: 100,000 Membership Rewards points after hitting the minimum spend
-
-Both offers are significantly higher than usual, making either card an excellent entry point into the world of premium travel benefits. And here's the thing - you don't need to go straight to Platinum to start enjoying lounge access. The Gold card will get you into the same Priority Pass lounges (just with visit limits), so you can test the waters before deciding if unlimited access is worth the upgrade.
-
-If you're interested in applying through my referral link, we both benefit - you get the same welcome bonus, and I earn some points too. It's genuinely win-win, and I only recommend cards I actually use and believe in.
+If you fancy a look, here is my referral link. I only mention cards I actually carry.
 
 [Apply for AMEX Cards - Referral Link](https://americanexpress.com/en-gb/referral/platinum-credit?ref=aHMEDHLthg)
 
-*Whether you choose Gold or Platinum, you'll be joining the ranks of travelers who've discovered that airport lounges can transform the entire travel experience. From Lisboa's limited COVID service to Istanbul's full luxury treatment - it's been quite the journey, and it's one I'm glad to share.*
+From a till-service lounge in Lisboa to complimentary massages in Istanbul, it has been quite the journey, and one I am glad to share.
