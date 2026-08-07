@@ -1,12 +1,25 @@
 use leptos::prelude::*;
 
+/// Sends the contact form.
+///
+/// `turnstile_token` is populated by the Turnstile widget and `company_website`
+/// is a honeypot: it is hidden from real visitors, so anything that arrives
+/// with it filled in is a bot.
+///
+/// Both are optional so that a submission which omits them (a direct POST, or a
+/// browser where the widget could not load) fails our own checks with a useful
+/// message rather than failing to deserialize.
 #[server(SendEmail, "/api")]
 pub async fn send_email(
     name: String,
     email: String,
     message: String,
+    turnstile_token: Option<String>,
+    company_website: Option<String>,
 ) -> Result<String, ServerFnError> {
+    use crate::server_functions::turnstile::verify_turnstile;
     use dotenv::dotenv;
+    use leptos::logging::log;
     use lettre::{
         message::header::ContentType, message::Mailbox,
         transport::smtp::authentication::Credentials, AsyncSmtpTransport, AsyncTransport, Message,
@@ -15,6 +28,16 @@ pub async fn send_email(
     use std::env;
 
     dotenv().ok();
+
+    // Honeypot first: it costs nothing and filters the naive bots before we
+    // spend a network round trip verifying a token. Report success so the bot
+    // has no signal that it was caught.
+    if company_website.is_some_and(|field| !field.trim().is_empty()) {
+        log!("contact form: discarding submission that tripped the honeypot");
+        return Ok(String::from("Message sent!"));
+    }
+
+    verify_turnstile(turnstile_token.as_deref().unwrap_or_default()).await?;
 
     let body = String::from(format!(
         "Message:\n From: {}({}) \n {}",

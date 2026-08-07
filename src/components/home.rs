@@ -1,6 +1,37 @@
 use crate::components::navigation::*;
+use crate::server_functions::turnstile::{CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME};
 use crate::server_functions::{form_email::*, posts::*};
 use leptos::prelude::*;
+
+/// Name of the honeypot input. Must match the `company_website` parameter of
+/// [`send_email`].
+const HONEYPOT_FIELD: &str = "company_website";
+
+#[cfg(feature = "hydrate")]
+mod turnstile_js {
+    use wasm_bindgen::prelude::*;
+
+    #[wasm_bindgen]
+    extern "C" {
+        // The sitekey is deliberately absent here: turnstile.js reads it from
+        // the meta tag rendered by `shell`, so it stays a runtime setting.
+        #[wasm_bindgen(js_namespace = window, js_name = mountTurnstile)]
+        pub fn mount_turnstile(action: &str, field_name: &str);
+
+        #[wasm_bindgen(js_namespace = window, js_name = resetTurnstile)]
+        pub fn reset_turnstile();
+    }
+}
+
+#[cfg(feature = "hydrate")]
+use turnstile_js::{mount_turnstile, reset_turnstile};
+
+// The widget is a browser-only concern; these keep the server build compiling.
+#[cfg(not(feature = "hydrate"))]
+fn mount_turnstile(_action: &str, _field_name: &str) {}
+
+#[cfg(not(feature = "hydrate"))]
+fn reset_turnstile() {}
 
 #[component]
 pub fn HomePage() -> impl IntoView {
@@ -47,6 +78,22 @@ pub fn HomePage() -> impl IntoView {
     let is_valid = move || {
         !name().is_empty() && !email().is_empty() && email().contains('@') && !message().is_empty()
     };
+
+    // Render the widget once the form is on the page. Doing this from an effect
+    // rather than relying on Turnstile's automatic scan means it also appears
+    // when the visitor arrives here through the router.
+    Effect::new(move |_| {
+        mount_turnstile(CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME);
+    });
+
+    // A token is consumed by the submission that used it, so without this a
+    // second attempt (after an SMTP failure, say) would be rejected as a
+    // duplicate.
+    Effect::new(move |_| {
+        if value.with(Option::is_some) {
+            reset_turnstile();
+        }
+    });
 
     view! {
         <section id="sidebar">
@@ -142,6 +189,28 @@ pub fn HomePage() -> impl IntoView {
                                         </label>
                                     </div>
                                 </div>
+
+                                // Honeypot. Positioned off screen rather than
+                                // hidden with `display: none`, which bots have
+                                // long since learned to skip, and taken out of
+                                // the tab order and the accessibility tree so
+                                // no real visitor can reach it.
+                                <div class="hp-field" aria-hidden="true">
+                                    <label>
+                                        "Company website"
+                                        <input
+                                            type="text"
+                                            name=HONEYPOT_FIELD
+                                            tabindex="-1"
+                                            autocomplete="off"
+                                        />
+                                    </label>
+                                </div>
+
+                                // Turnstile renders into this and injects the
+                                // token as a hidden input inside the form.
+                                <div id="turnstile-widget" class="turnstile-widget"></div>
+
                                 <ul class="actions">
                                     <li>
                                         <button
@@ -163,9 +232,13 @@ pub fn HomePage() -> impl IntoView {
                             <div>{move || {
                                 let result = value.get();
                                 match result {
-                                    Some(Ok(_)) => "Message sent successfully!",
-                                    Some(Err(_)) => "Failed to send message",
-                                    None => "Loading...",
+                                    Some(Ok(_)) => "Message sent successfully!".to_string(),
+                                    // Surface the server's own wording so a
+                                    // failed challenge reads differently from a
+                                    // mail failure.
+                                    Some(Err(ServerFnError::ServerError(reason))) => reason,
+                                    Some(Err(_)) => "Failed to send message".to_string(),
+                                    None => "Loading...".to_string(),
                                 }
                             }}
                             </div>

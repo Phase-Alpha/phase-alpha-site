@@ -30,6 +30,35 @@ to go to your newly created project.
 Feel free to explore the project structure, but the best place to start with your application code is in `src/app.rs`.  
 Addtionally, Cargo.toml may need updating as new versions of the dependencies are released, especially if things are not working after a `cargo update`.
 
+## Configuration
+
+The contact form is protected by [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
+plus a honeypot field. Create a widget in the Cloudflare dashboard to obtain a sitekey and a secret
+key, making sure the widget's hostname list covers the domain you are serving from (add `localhost`
+too if you want the widget to work under `cargo leptos watch`).
+
+Both values are read from the environment at startup, so `.env` is the only place they need to go
+and changing either one is a restart rather than a rebuild:
+
+```sh
+TURNSTILE_SITE_KEY="0x4AAAAAAEJbYCP3tk2ylm1z"
+TURNSTILE_SECRET_KEY="0x..."
+```
+
+`TURNSTILE_SITE_KEY` is public. The server renders it into a `<meta name="turnstile-sitekey">` tag
+and `public/turnstile.js` reads it back out to render the widget. If it is unset the widget is
+skipped, which means every submission is rejected server-side, so the form will not work at all.
+
+`TURNSTILE_SECRET_KEY` is a secret and is never sent to the browser. It is used only to validate
+submitted tokens against Cloudflare's siteverify endpoint. If it is unset, submissions are rejected.
+
+For local development Cloudflare publishes test keys that always pass: sitekey
+`1x00000000000000000000AA` and secret `1x0000000000000000000000000000000AA`. Never use these in
+production, as they provide no protection whatsoever.
+
+In production the `.env` file is mounted into the container by `docker-compose.yml`, so add both
+variables there.
+
 ## Running your project
 
 ```bash
