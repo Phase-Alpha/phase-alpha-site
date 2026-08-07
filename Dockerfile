@@ -60,6 +60,12 @@ COPY posts/ ./posts/
 # Copy remaining config files
 COPY Cargo.toml ./
 
+# Public Turnstile sitekey. Compiled into both the server binary and the WASM
+# bundle so the two cannot disagree. Falls back to Cloudflare's test key, which
+# always passes, when the build argument is not supplied.
+ARG TURNSTILE_SITE_KEY
+ENV TURNSTILE_SITE_KEY=${TURNSTILE_SITE_KEY}
+
 # Build the actual project (only rebuilds if source or posts changed)
 RUN cargo leptos build --release
 

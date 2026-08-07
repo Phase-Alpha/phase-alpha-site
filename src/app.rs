@@ -14,6 +14,16 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <link rel="preconnect" href="https://challenges.cloudflare.com"/>
+                // Loaded here rather than on the contact page so the helpers
+                // survive client-side navigation. Both are deferred, which (unlike
+                // async) guarantees they execute in document order, so
+                // `onTurnstileLoad` is defined before api.js calls it.
+                <script src="/turnstile.js" defer></script>
+                <script
+                    src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad"
+                    defer
+                ></script>
                 <AutoReload options=options.clone() />
                 <HydrationScripts options/>
                 <MetaTags/>

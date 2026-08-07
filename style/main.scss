@@ -3867,3 +3867,23 @@ input, select, textarea {
 			}
 
 		}
+
+/* Contact form spam controls
+   ------------------------------------------------------------------------ */
+
+/* Honeypot wrapper. Kept out of the viewport instead of using
+   `display: none` or `visibility: hidden`, both of which are trivial for a
+   bot to detect and skip. The field still submits, so anything that fills it
+   in identifies itself. */
+.hp-field {
+	position: absolute;
+	left: -9999px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.turnstile-widget {
+	margin: 0 0 2em 0;
+}
