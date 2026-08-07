@@ -14,6 +14,15 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                // Public Turnstile sitekey, read at request time and handed to
+                // the browser here rather than compiled into the WASM bundle,
+                // so it can be changed without a rebuild. `<head>` is never
+                // hydrated, so there is no server/client mismatch to worry
+                // about; turnstile.js reads the value back out of this tag.
+                <meta
+                    name="turnstile-sitekey"
+                    content=std::env::var("TURNSTILE_SITE_KEY").unwrap_or_default()
+                />
                 <link rel="preconnect" href="https://challenges.cloudflare.com"/>
                 // Loaded here rather than on the contact page so the helpers
                 // survive client-side navigation. Both are deferred, which (unlike

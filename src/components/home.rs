@@ -3,17 +3,6 @@ use crate::server_functions::turnstile::{CONTACT_FORM_ACTION, RESPONSE_FIELD_NAM
 use crate::server_functions::{form_email::*, posts::*};
 use leptos::prelude::*;
 
-/// Public Turnstile sitekey, baked in at build time.
-///
-/// It is a public value, so there is nothing to protect here; it is compiled in
-/// rather than read from the environment so that the server and the WASM bundle
-/// cannot disagree about it. Falls back to Cloudflare's "always passes" test key
-/// so a fresh checkout runs without any configuration.
-const TURNSTILE_SITE_KEY: &str = match option_env!("TURNSTILE_SITE_KEY") {
-    Some(key) => key,
-    None => "1x00000000000000000000AA",
-};
-
 /// Name of the honeypot input. Must match the `company_website` parameter of
 /// [`send_email`].
 const HONEYPOT_FIELD: &str = "company_website";
@@ -24,8 +13,10 @@ mod turnstile_js {
 
     #[wasm_bindgen]
     extern "C" {
+        // The sitekey is deliberately absent here: turnstile.js reads it from
+        // the meta tag rendered by `shell`, so it stays a runtime setting.
         #[wasm_bindgen(js_namespace = window, js_name = mountTurnstile)]
-        pub fn mount_turnstile(sitekey: &str, action: &str, field_name: &str);
+        pub fn mount_turnstile(action: &str, field_name: &str);
 
         #[wasm_bindgen(js_namespace = window, js_name = resetTurnstile)]
         pub fn reset_turnstile();
@@ -37,7 +28,7 @@ use turnstile_js::{mount_turnstile, reset_turnstile};
 
 // The widget is a browser-only concern; these keep the server build compiling.
 #[cfg(not(feature = "hydrate"))]
-fn mount_turnstile(_sitekey: &str, _action: &str, _field_name: &str) {}
+fn mount_turnstile(_action: &str, _field_name: &str) {}
 
 #[cfg(not(feature = "hydrate"))]
 fn reset_turnstile() {}
@@ -92,7 +83,7 @@ pub fn HomePage() -> impl IntoView {
     // rather than relying on Turnstile's automatic scan means it also appears
     // when the visitor arrives here through the router.
     Effect::new(move |_| {
-        mount_turnstile(TURNSTILE_SITE_KEY, CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME);
+        mount_turnstile(CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME);
     });
 
     // A token is consumed by the submission that used it, so without this a

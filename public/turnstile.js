@@ -10,8 +10,24 @@
 	var pending = null;
 	var ready = false;
 
+	// The sitekey is public and is rendered into the document head by the
+	// server, which keeps it a runtime setting rather than something baked
+	// into the WASM bundle at build time.
+	function siteKey() {
+		var meta = document.querySelector('meta[name="turnstile-sitekey"]');
+		return meta ? meta.getAttribute("content") : "";
+	}
+
 	function render(options, attempt) {
 		attempt = attempt || 0;
+
+		var sitekey = siteKey();
+		if (!sitekey) {
+			console.warn(
+				"Turnstile: TURNSTILE_SITE_KEY is not set, skipping widget render",
+			);
+			return;
+		}
 
 		var container = document.getElementById("turnstile-widget");
 		if (!container) {
@@ -38,7 +54,7 @@
 		}
 
 		widgetId = window.turnstile.render(container, {
-			sitekey: options.sitekey,
+			sitekey: sitekey,
 			action: options.action,
 			// Turnstile injects a hidden input under this name into the
 			// enclosing form, which is how the token reaches the server.
@@ -49,8 +65,8 @@
 	}
 
 	// Called from Leptos once the contact form is on the page.
-	window.mountTurnstile = function (sitekey, action, fieldName) {
-		var options = { sitekey: sitekey, action: action, fieldName: fieldName };
+	window.mountTurnstile = function (action, fieldName) {
+		var options = { action: action, fieldName: fieldName };
 		if (ready) {
 			render(options);
 		} else {

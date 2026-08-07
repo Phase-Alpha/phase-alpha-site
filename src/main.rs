@@ -8,6 +8,10 @@ async fn main() {
     use phase_alpha_site::app::*;
     use phase_alpha_site::server_functions::url_shorten::{redirect, shorten_url};
 
+    // Server functions load this themselves, but `shell` needs the Turnstile
+    // sitekey while rendering, so pull the file in once up front.
+    dotenv::dotenv().ok();
+
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
     let leptos_options = conf.leptos_options;

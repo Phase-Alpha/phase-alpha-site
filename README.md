@@ -32,39 +32,32 @@ Addtionally, Cargo.toml may need updating as new versions of the dependencies ar
 
 ## Configuration
 
-The contact form is protected by [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/).
-Create a widget in the Cloudflare dashboard to obtain a sitekey and a secret key, then set both
-variables below. Note that they are consumed at different times.
+The contact form is protected by [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/)
+plus a honeypot field. Create a widget in the Cloudflare dashboard to obtain a sitekey and a secret
+key, making sure the widget's hostname list covers the domain you are serving from (add `localhost`
+too if you want the widget to work under `cargo leptos watch`).
 
-### `TURNSTILE_SECRET_KEY` (runtime)
-
-Read from `.env` by the server when it validates a submitted token against Cloudflare's siteverify
-endpoint. This is a secret and is never sent to the browser.
+Both values are read from the environment at startup, so `.env` is the only place they need to go
+and changing either one is a restart rather than a rebuild:
 
 ```sh
+TURNSTILE_SITE_KEY="0x4AAAAAAEJbYCP3tk2ylm1z"
 TURNSTILE_SECRET_KEY="0x..."
 ```
 
-### `TURNSTILE_SITE_KEY` (build time)
+`TURNSTILE_SITE_KEY` is public. The server renders it into a `<meta name="turnstile-sitekey">` tag
+and `public/turnstile.js` reads it back out to render the widget. If it is unset the widget is
+skipped, which means every submission is rejected server-side, so the form will not work at all.
 
-The sitekey is public. It is compiled into both the server binary and the WASM bundle, so it must be
-set when building rather than when running. Baking it in this way guarantees the server-rendered
-markup and the hydrated markup cannot disagree about which widget to render.
+`TURNSTILE_SECRET_KEY` is a secret and is never sent to the browser. It is used only to validate
+submitted tokens against Cloudflare's siteverify endpoint. If it is unset, submissions are rejected.
 
-```bash
-TURNSTILE_SITE_KEY="0x..." cargo leptos build --release
-```
+For local development Cloudflare publishes test keys that always pass: sitekey
+`1x00000000000000000000AA` and secret `1x0000000000000000000000000000000AA`. Never use these in
+production, as they provide no protection whatsoever.
 
-For the container image it is a build argument:
-
-```bash
-docker build --build-arg TURNSTILE_SITE_KEY="0x..." -t phase-alpha-site .
-```
-
-If it is left unset the build falls back to Cloudflare's test sitekey, `1x00000000000000000000AA`,
-which always passes. That is convenient for local development but provides no protection, so make
-sure a real sitekey is supplied for production builds. Cloudflare publishes a matching test secret
-key, `1x0000000000000000000000000000000AA`, for local use.
+In production the `.env` file is mounted into the container by `docker-compose.yml`, so add both
+variables there.
 
 ## Running your project
 
