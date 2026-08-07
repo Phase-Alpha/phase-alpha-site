@@ -22,6 +22,9 @@ pub const CONTACT_FORM_ACTION: &str = "contact-form";
 pub const RESPONSE_FIELD_NAME: &str = "turnstile_token";
 
 #[cfg(feature = "ssr")]
+use leptos::prelude::ServerFnError;
+
+#[cfg(feature = "ssr")]
 const SITEVERIFY_URL: &str = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 /// Cloudflare caps tokens at 2048 characters.
@@ -43,19 +46,24 @@ struct SiteVerifyResponse {
 /// Tokens are single use and expire five minutes after they are issued, so a
 /// replayed or stale token comes back as `timeout-or-duplicate`.
 #[cfg(feature = "ssr")]
-pub async fn verify_turnstile(token: &str) -> Result<(), leptos::prelude::ServerFnError> {
+pub async fn verify_turnstile(token: &str) -> Result<(), ServerFnError> {
     use leptos::logging::log;
-    use leptos::prelude::ServerFnError;
+
+    // These are `fn`s with an explicit return type rather than closures so that
+    // the `E` parameter of `ServerFnError` is pinned to the default. Inferring
+    // it is ambiguous, because a blanket `From<E> for ServerFnError` impl exists
+    // for any `E: StdError`.
 
     // Deliberately vague: a bot should not learn which check it tripped.
-    let rejected = || {
+    fn rejected() -> ServerFnError {
         ServerFnError::ServerError(
             "Could not verify that you are human. Please refresh and try again.".to_string(),
         )
-    };
-    let unavailable = || {
+    }
+
+    fn unavailable() -> ServerFnError {
         ServerFnError::ServerError("Could not send message, please try again shortly.".to_string())
-    };
+    }
 
     // Cheap local checks first so obvious junk never costs us a round trip.
     if token.is_empty() || token.len() > MAX_TOKEN_LEN {
