@@ -1,0 +1,169 @@
+@use "tokens" as t;
+
+// Emacs workspace chrome: tab-bar, mode line, status bar and echo area.
+//
+// The notes are explicit that this should read as one continuous workspace,
+// so the chrome is identical on every page and is the only literal Emacs
+// furniture. Sections are not wrapped in fake window decoration.
+
+// ---------------------------------------------------------------------------
+// Tab bar. This is the primary navigation, modelled on the Emacs tab-bar in
+// the Helheim screenshot. It is always visible: no hamburger, no fold-out.
+// ---------------------------------------------------------------------------
+
+.tabbar {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	display: flex;
+	align-items: stretch;
+	background: var(--tabbar-bg);
+	border-bottom: 1px solid var(--modeline-border);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+
+	// Long enough label sets can scroll rather than wrap, which would make
+	// the chrome height jump. With five short labels this should not trigger
+	// above ~320px.
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+	display: none;
+}
+
+.tabbar__list {
+	display: flex;
+	align-items: stretch;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tabbar__item {
+	display: flex;
+}
+
+.tabbar__link {
+	display: flex;
+	align-items: center;
+	min-height: var(--touch);
+	padding: 0 var(--sp-4);
+	white-space: nowrap;
+	color: var(--fg-main);
+	background: var(--tab-other-bg);
+	border-right: 1px solid var(--modeline-border);
+	text-decoration: none;
+
+	// Reserve the active marker's space on every tab so that switching pages
+	// does not shift the row by 2px.
+	border-bottom: 2px solid transparent;
+}
+
+.tabbar__link:hover {
+	background: var(--tab-current-bg);
+}
+
+// Current buffer. Marked by background *and* the brand red underline, so the
+// active state is not carried by colour alone.
+.tabbar__link[aria-current="page"] {
+	background: var(--tab-current-bg);
+	font-weight: 600;
+	border-bottom-color: var(--accent);
+}
+
+.tabbar__external::after {
+	content: " ↗";
+	color: var(--fg-dim);
+}
+
+@media (max-width: t.$bp-sm) {
+	.tabbar__link {
+		padding: 0 var(--sp-3);
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Mode line. Buffer name on the left, secondary segments on the right.
+// ---------------------------------------------------------------------------
+
+.modeline {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--sp-4);
+	padding: var(--sp-2) var(--gutter);
+	background: var(--modeline-bg);
+	// Full-contrast text, as Emacs does. The mockup's dimmed variant failed
+	// WCAG AA in dark mode.
+	color: var(--modeline-fg);
+	border-bottom: 1px solid var(--modeline-border);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+}
+
+.modeline__buffer {
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.modeline__meta {
+	display: flex;
+	gap: var(--sp-4);
+	white-space: nowrap;
+}
+
+// ---------------------------------------------------------------------------
+// Status bar and echo area, pinned to the bottom of the page.
+// ---------------------------------------------------------------------------
+
+.statusbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--sp-4);
+	padding: var(--sp-2) var(--gutter);
+	background: var(--modeline-bg);
+	color: var(--modeline-fg);
+	border-top: 1px solid var(--modeline-border);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+}
+
+.statusbar__segments {
+	display: flex;
+	gap: var(--sp-4);
+	white-space: nowrap;
+}
+
+.echo {
+	padding: var(--sp-1) var(--gutter) var(--sp-2);
+	background: var(--bg-main);
+	color: var(--fg-dim);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+}
+
+.echo__key {
+	color: var(--blue);
+}
+
+// Progressive disclosure. On narrow screens the buffer name is what matters,
+// so secondary segments drop out before anything overflows.
+@media (max-width: t.$bp-sm) {
+	.modeline__meta > *:not(:first-child),
+	.statusbar__segments > *:not(:first-child) {
+		display: none;
+	}
+}
+
+@media (max-width: t.$bp-xs) {
+	.modeline__meta,
+	.statusbar__segments,
+	.echo {
+		display: none;
+	}
+}

@@ -1,265 +1,98 @@
-use crate::components::navigation::*;
-use crate::server_functions::turnstile::{CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME};
-use crate::server_functions::{form_email::*, posts::*};
+use crate::components::layout::Layout;
+use crate::server_functions::posts::*;
 use leptos::prelude::*;
 
-/// Name of the honeypot input. Must match the `company_website` parameter of
-/// [`send_email`].
-const HONEYPOT_FIELD: &str = "company_website";
-
-#[cfg(feature = "hydrate")]
-mod turnstile_js {
-    use wasm_bindgen::prelude::*;
-
-    #[wasm_bindgen]
-    extern "C" {
-        // The sitekey is deliberately absent here: turnstile.js reads it from
-        // the meta tag rendered by `shell`, so it stays a runtime setting.
-        #[wasm_bindgen(js_namespace = window, js_name = mountTurnstile)]
-        pub fn mount_turnstile(action: &str, field_name: &str);
-
-        #[wasm_bindgen(js_namespace = window, js_name = resetTurnstile)]
-        pub fn reset_turnstile();
-    }
-}
-
-#[cfg(feature = "hydrate")]
-use turnstile_js::{mount_turnstile, reset_turnstile};
-
-// The widget is a browser-only concern; these keep the server build compiling.
-#[cfg(not(feature = "hydrate"))]
-fn mount_turnstile(_action: &str, _field_name: &str) {}
-
-#[cfg(not(feature = "hydrate"))]
-fn reset_turnstile() {}
+/// How many posts the homepage teaser shows.
+const TEASER_COUNT: usize = 3;
 
 #[component]
 pub fn HomePage() -> impl IntoView {
     let posts = use_context::<Resource<Result<Vec<Post>, ServerFnError>>>()
-        .expect("unable to find context");
+        .expect("unable to find posts resource");
 
-    let posts_view = move || {
+    // Text-only teaser. The previous design put large photo cards here, which
+    // the notes identified as the biggest structural problem: the personal blog
+    // was competing with the client-facing pitch for the same scroll.
+    let teaser = move || {
         posts.and_then(|posts| {
-            let preview_posts: Vec<_> = posts[0..=2].iter()
+            posts
+                .iter()
+                // `take` rather than slicing. The old `posts[0..=2]` panicked
+                // if there were ever fewer than three posts.
+                .take(TEASER_COUNT)
                 .map(|post| {
-                    let image_path = post.meta_data.image_path.clone();
-                    let title = post.meta_data.title.clone();
-                    let description = post.meta_data.description.clone();
                     let href = format!("/blog/{}", post.meta_data.create_href());
+                    let title = post.meta_data.title.clone();
+                    let tag_label = post.meta_data.tag_label();
+                    let tag_class = post.meta_data.tag_class();
 
                     view! {
-                        <section>
-                            <img src={image_path} alt="" data-position="center center" class="image"/>
-                            <div class="content">
-                                <div class="inner">
-                                    <h2>{title}</h2>
-                                    <p>{description}</p>
-                                    <ul class="actions">
-                                        <li><a href={href} class="button">Read</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
+                        <li class="post-row">
+                            <a class="post-row__link" href=href>
+                                <span class="post-row__title">{title}</span>
+                                <span class="post-row__meta">
+                                    <span class=tag_class>{tag_label}</span>
+                                </span>
+                            </a>
+                        </li>
                     }
                 })
-                .collect();
-            preview_posts.into_iter().collect_view()
+                .collect_view()
         })
     };
 
-    let send_email = ServerAction::<SendEmail>::new();
-    let value = send_email.value();
-    let is_pending = send_email.pending();
-
-    let (name, set_name) = signal(String::new());
-    let (email, set_email) = signal(String::new());
-    let (message, set_message) = signal(String::new());
-
-    let is_valid = move || {
-        !name().is_empty() && !email().is_empty() && email().contains('@') && !message().is_empty()
-    };
-
-    // Render the widget once the form is on the page. Doing this from an effect
-    // rather than relying on Turnstile's automatic scan means it also appears
-    // when the visitor arrives here through the router.
-    Effect::new(move |_| {
-        mount_turnstile(CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME);
-    });
-
-    // A token is consumed by the submission that used it, so without this a
-    // second attempt (after an SMTP failure, say) would be rejected as a
-    // duplicate.
-    Effect::new(move |_| {
-        if value.with(Option::is_some) {
-            reset_turnstile();
-        }
-    });
-
     view! {
-        <section id="sidebar">
-            <div class="inner">
-                <Nav exclude={Some(NavElements::None)} current_page={NavElements::Home}/>
-            </div>
-        </section>
-
-        <div id="wrapper">
-
-            <section id="intro" class="wrapper style1 fullscreen fade-up">
-                <div class="inner">
-                    <div class="inner">
-                        <a class="image"><img src="palogo.png" alt="" data-position="center center" style="width: 25%; height: 25%; margin: auto"/></a>
-                    </div>
-                    <h1>Phase Alpha</h1>
-                    <p>Welcome to our Atelier, your one stop shop for technical and creative pursuits</p>
-                    <ul class="actions">
-                        <li><a href="#two" class="button scrolly">Learn more</a></li>
-                    </ul>
+        <Layout buffer="*phase-alpha*" mode="(Fundamental)">
+            <section class="section">
+                <img
+                    class="hero__logo"
+                    src="/palogo.png"
+                    alt="Phase Alpha logo"
+                    width="56"
+                    height="56"
+                />
+                <span class="eyebrow">";; ~/phase-alpha/README"</span>
+                <h1>"Phase Alpha"</h1>
+                <p class="hero__tagline">
+                    "Custom software and design for small teams who need to ship something real."
+                </p>
+                <div class="btn-row">
+                    <a class="btn btn--primary" href="/services">"See our work"</a>
+                    <a class="btn" href="/contact">"Get in touch"</a>
                 </div>
             </section>
 
-            <section id="one" class="wrapper style2 spotlights">
-                <Suspense fallback=move || view! { <p>"Loading posts..."</p> }>
-                    {posts_view}
+            <section class="section">
+                <h2>"What we do"</h2>
+                <div class="grid-2" style="margin-top: var(--sp-5)">
+                    <div>
+                        <span class="eyebrow eyebrow--green">";; software"</span>
+                        <h3 class="card__title">"Software & automation"</h3>
+                        <p class="card__desc">
+                            "Custom tools, workflow automation, and upgrades to legacy systems."
+                        </p>
+                    </div>
+                    <div>
+                        <span class="eyebrow eyebrow--magenta">";; design"</span>
+                        <h3 class="card__title">"Design & writing"</h3>
+                        <p class="card__desc">
+                            "UI/UX design, engineering and graphic design, brand copy and editing."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            // Positioned after the pitch on purpose: proof of activity, not
+            // the main event.
+            <section class="section">
+                <span class="eyebrow">";; recent notes"</span>
+                <Suspense fallback=move || {
+                    view! { <p class="card__desc">"Loading notes…"</p> }
+                }>
+                    <ul class="post-list">{teaser}</ul>
                 </Suspense>
+                <a class="more-link" href="/blog">"→ all posts"</a>
             </section>
-
-            <section id="two" class="wrapper style3 fade-up">
-                <div class="inner">
-                    <h2>What we do</h2>
-                    <p>At Phase Alpha, our specialties and interests transcend industry boundaries.
-
-                    With our main branches; technical, and creative, we can help you realise your vision.</p>
-                    <div class="features">
-                        <section>
-                            <span class="icon solid major fa-code"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="50%" height="50%"><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z" style="fill: #a04f8e;"/></svg></span>
-                            <h3>Software && Automation</h3>
-                            <p>From writing bespoke software to automating your current processes, we have experience in a variety of industries.</p>
-                        </section>
-                        <section>
-                            <span class="icon solid major"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="50%" height="50%"><path d="M339.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L568.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S517.7-4.4 499.1 9.6L262.4 187.2c-24 18-38.2 46.1-38.4 76.1L339.3 367.1zm-19.6 25.4l-116-104.4C143.9 290.3 96 339.6 96 400c0 3.9 .2 7.8 .6 11.6C98.4 429.1 86.4 448 68.8 448H64c-17.7 0-32 14.3-32 32s14.3 32 32 32H208c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z" style="fill: #a04f8e;" /></svg></span>
-                            <h3>Design && Writing</h3>
-                            <p>Perhaps you need some UI/UX design, or proof reading and copywriting. They might seem mutually exclusive, but an element of creativity is necessary in most fields.</p>
-                        </section>
-                    </div>
-                    <ul class="actions">
-                        <li><a href="/services" class="button">Learn more</a></li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="three" class="wrapper style1 fade-up">
-                <div class="inner">
-                    <h2>Get in touch</h2>
-                    <p>"Have a project in mind? Contact us and let's chat!"</p>
-                    <div class="split style1">
-                        <section>
-                            <ActionForm action=send_email>
-                                <div class="fields">
-                                    <div class="field half">
-                                        <label>
-                                            "Name"
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                prop:value=name
-                                                on:input=move |ev| set_name(event_target_value(&ev))
-                                            />
-                                        </label>
-                                    </div>
-                                    <div class="field half">
-                                        <label>
-                                            "Email"
-                                            <input
-                                                type="text"
-                                                name="email"
-                                                prop:value=email
-                                                on:input=move |ev| set_email(event_target_value(&ev))
-                                            />
-                                        </label>
-                                    </div>
-                                    <div class="field">
-                                        <label>
-                                            "Message"
-                                            <textarea
-                                                name="message"
-                                                rows="5"
-                                                prop:value=message
-                                                on:input=move |ev| set_message(event_target_value(&ev))
-                                            />
-                                        </label>
-                                    </div>
-                                </div>
-
-                                // Honeypot. Positioned off screen rather than
-                                // hidden with `display: none`, which bots have
-                                // long since learned to skip, and taken out of
-                                // the tab order and the accessibility tree so
-                                // no real visitor can reach it.
-                                <div class="hp-field" aria-hidden="true">
-                                    <label>
-                                        "Company website"
-                                        <input
-                                            type="text"
-                                            name=HONEYPOT_FIELD
-                                            tabindex="-1"
-                                            autocomplete="off"
-                                        />
-                                    </label>
-                                </div>
-
-                                // Turnstile renders into this and injects the
-                                // token as a hidden input inside the form.
-                                <div id="turnstile-widget" class="turnstile-widget"></div>
-
-                                <ul class="actions">
-                                    <li>
-                                        <button
-                                            type="submit"
-                                            class="button submit"
-                                            disabled=move || !is_valid() || is_pending()
-                                        >
-                                            "Send Message"
-                                        </button>
-                                    </li>
-                                </ul>
-                            </ActionForm>
-
-                            <Show when=is_pending>
-                                <div>"Sending..."</div>
-                            </Show>
-
-                        <Show when=move || value.with(Option::is_some)>
-                            <div>{move || {
-                                let result = value.get();
-                                match result {
-                                    Some(Ok(_)) => "Message sent successfully!".to_string(),
-                                    // Surface the server's own wording so a
-                                    // failed challenge reads differently from a
-                                    // mail failure.
-                                    Some(Err(ServerFnError::ServerError(reason))) => reason,
-                                    Some(Err(_)) => "Failed to send message".to_string(),
-                                    None => "Loading...".to_string(),
-                                }
-                            }}
-                            </div>
-                        </Show>
-                        </section>
-                        <section>
-                            <ul class="contact">
-                                <li>
-                                    <h3>Address</h3>
-                                    <span>The Worldwide Web</span>
-                                </li>
-                                <li>
-                                    <h3>Email</h3>
-                                    <a href="#">info@phasealpha.io</a>
-                                </li>
-                            </ul>
-                        </section>
-                    </div>
-                </div>
-            </section>
-
-        </div>
+        </Layout>
     }
 }

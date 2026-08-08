@@ -1,0 +1,238 @@
+@use "tokens" as t;
+
+// Page shell and content patterns.
+//
+// The mockup's grey page background, outer padding and drop-shadowed card
+// exist only so it could show light and dark side by side. The real site is
+// full bleed, so none of that is reproduced here.
+
+.page {
+	flex: 1 0 auto;
+	width: 100%;
+	max-width: var(--measure);
+	margin: 0 auto;
+	padding: var(--sp-6) var(--gutter) var(--sp-7);
+}
+
+.section + .section {
+	margin-top: var(--sp-6);
+	padding-top: var(--sp-5);
+	border-top: 1px solid var(--rule);
+}
+
+// ---------------------------------------------------------------------------
+// Eyebrow labels. `;; comment` text above headings.
+//
+// Rendered in --fg-dim, which is what `comment` actually maps to in Modus
+// (comment -> fg-dim). The mockup coloured these blue, but blue in Modus
+// carries links and constants, and a muted label is also better hierarchy
+// for an eyebrow.
+// ---------------------------------------------------------------------------
+
+.eyebrow {
+	display: block;
+	margin-bottom: var(--sp-2);
+	color: var(--fg-dim);
+	font-family: var(--font-mono);
+	font-size: var(--fs-eyebrow);
+}
+
+.eyebrow--green {
+	color: var(--green);
+}
+
+.eyebrow--magenta {
+	color: var(--magenta);
+}
+
+// ---------------------------------------------------------------------------
+// Hero
+// ---------------------------------------------------------------------------
+
+.hero__logo {
+	width: 3.5rem;
+	height: 3.5rem;
+	object-fit: contain;
+	margin-bottom: var(--sp-3);
+}
+
+.hero__tagline {
+	max-width: 34rem;
+	margin-top: var(--sp-3);
+	color: var(--fg-dim);
+}
+
+// ---------------------------------------------------------------------------
+// Bracketed buttons. Real links and buttons, never spans, so they are
+// focusable and announced correctly. The brackets are decorative and are
+// hidden from assistive technology.
+// ---------------------------------------------------------------------------
+
+.btn-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-3);
+	margin-top: var(--sp-5);
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--touch);
+	padding: 0 var(--sp-4);
+	font-family: var(--font-mono);
+	font-size: var(--fs-small);
+	text-decoration: none;
+	border: 1px solid var(--fg-main);
+	background: transparent;
+	color: var(--fg-main);
+	cursor: pointer;
+}
+
+.btn::before {
+	content: "[ ";
+}
+
+.btn::after {
+	content: " ]";
+}
+
+.btn--primary {
+	background: var(--fg-main);
+	color: var(--bg-main);
+}
+
+.btn:hover {
+	border-color: var(--accent);
+}
+
+// ---------------------------------------------------------------------------
+// Two-column feature grid, collapsing to one column on small screens.
+// ---------------------------------------------------------------------------
+
+.grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--sp-5);
+}
+
+@media (max-width: t.$bp-sm) {
+	.grid-2 {
+		grid-template-columns: 1fr;
+	}
+}
+
+.card__title {
+	margin-bottom: var(--sp-1);
+	font-size: var(--fs-h3);
+}
+
+.card__desc {
+	color: var(--fg-dim);
+	font-size: var(--fs-small);
+}
+
+// ---------------------------------------------------------------------------
+// Post rows, used by both the homepage teaser and the blog index.
+//
+// The title and tag sit on one line on wide screens and stack on narrow ones.
+// The longest current title is 65 characters, which would otherwise collide
+// with the tag rather than wrap.
+// ---------------------------------------------------------------------------
+
+.post-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.post-row {
+	border-bottom: 1px solid var(--rule);
+}
+
+.post-list > .post-row:last-child {
+	border-bottom: 0;
+}
+
+.post-row__link {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--sp-4);
+	min-height: var(--touch);
+	padding: var(--sp-2) 0;
+	color: var(--fg-main);
+	text-decoration: none;
+}
+
+.post-row__link:hover .post-row__title {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.post-row__title {
+	font-family: var(--font-mono);
+	font-size: var(--fs-small);
+}
+
+// The org-mode style bullet marker.
+.post-row__title::before {
+	content: "▸ ";
+	color: var(--fg-dim);
+}
+
+.post-row__meta {
+	display: flex;
+	align-items: baseline;
+	gap: var(--sp-3);
+	flex-shrink: 0;
+}
+
+.post-row__date {
+	color: var(--fg-dim);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+}
+
+// `:tech:` / `:travel:` tags, coloured as in the mockup.
+.tag {
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+	white-space: nowrap;
+}
+
+.tag--tech {
+	color: var(--green);
+}
+
+.tag--travel {
+	color: var(--magenta);
+}
+
+.tag--other {
+	color: var(--fg-dim);
+}
+
+@media (max-width: t.$bp-sm) {
+	.post-row__link {
+		flex-direction: column;
+		justify-content: center;
+		gap: var(--sp-1);
+	}
+
+	.post-row__date {
+		display: none;
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Trailing link, e.g. "→ all posts"
+// ---------------------------------------------------------------------------
+
+.more-link {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--touch);
+	font-family: var(--font-mono);
+	font-size: var(--fs-small);
+}

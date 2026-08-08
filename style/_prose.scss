@@ -1,0 +1,162 @@
+@use "tokens" as t;
+
+// Blog post typography.
+
+// ---------------------------------------------------------------------------
+// Org keyword header, e.g. `#+title:` / `#+date:` / `#+filetags:`
+// ---------------------------------------------------------------------------
+
+.org-keywords {
+	margin-bottom: var(--sp-5);
+	font-family: var(--font-mono);
+	font-size: var(--fs-chrome);
+	line-height: 1.5;
+	color: var(--fg-dim);
+}
+
+.org-keywords__line {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-4);
+}
+
+.post-header {
+	margin-bottom: var(--sp-6);
+}
+
+.post-header__subtitle {
+	margin-top: var(--sp-1);
+	color: var(--fg-dim);
+	font-size: var(--fs-small);
+}
+
+// ---------------------------------------------------------------------------
+// Rendered Markdown body.
+// ---------------------------------------------------------------------------
+
+.prose {
+	font-size: var(--fs-body);
+	line-height: var(--lh-body);
+}
+
+.prose > * + * {
+	margin-top: var(--sp-4);
+}
+
+// Org-style literal heading markers.
+//
+// Posts stay in Markdown; pulldown-cmark still emits h1/h2/h3 and these
+// pseudo-elements draw the `*` / `**` / `***` prefixes. No org parser is
+// involved and no post content had to change.
+//
+// Note that six of the sixteen current posts contain no headings at all, so
+// those pages will not show any markers until headings are added.
+.prose h1,
+.prose h2,
+.prose h3 {
+	margin-top: var(--sp-6);
+	color: var(--blue);
+	font-weight: 600;
+}
+
+.prose h1 {
+	font-size: var(--fs-h3);
+}
+
+.prose h2 {
+	font-size: var(--fs-h3);
+}
+
+.prose h3 {
+	font-size: var(--fs-body);
+}
+
+.prose h1::before,
+.prose h2::before,
+.prose h3::before {
+	color: var(--fg-dim);
+}
+
+// Each marker is declared twice on purpose. The second declaration adds empty
+// alt text so supporting screen readers skip the asterisks, and browsers that
+// do not understand that syntax discard it and keep the plain first one. A
+// single `content: "* " / ""` would render no marker at all on those browsers,
+// and the marker is the whole point.
+.prose h1::before {
+	content: "* ";
+	content: "* " / "";
+}
+
+.prose h2::before {
+	content: "** ";
+	content: "** " / "";
+}
+
+.prose h3::before {
+	content: "*** ";
+	content: "*** " / "";
+}
+
+.prose ul,
+.prose ol {
+	padding-left: var(--sp-5);
+}
+
+.prose li + li {
+	margin-top: var(--sp-2);
+}
+
+.prose code {
+	padding: 0.1em 0.3em;
+	background: var(--code-bg);
+	font-family: var(--font-mono);
+	font-size: 0.9em;
+}
+
+.prose pre {
+	overflow-x: auto;
+	padding: var(--sp-3) var(--sp-4);
+	background: var(--code-bg);
+	border-left: 3px solid var(--rule);
+}
+
+.prose pre code {
+	padding: 0;
+	background: none;
+}
+
+// Pull-quotes render as a left-border callout, with no visible delimiters.
+// No post currently uses a Markdown blockquote, so this will not appear until
+// content uses one.
+.prose blockquote {
+	padding: var(--sp-3) var(--sp-4);
+	background: var(--callout-bg);
+	border-left: 3px solid var(--blue);
+	font-family: var(--font-mono);
+	font-size: var(--fs-small);
+}
+
+.prose blockquote > * + * {
+	margin-top: var(--sp-3);
+}
+
+// ---------------------------------------------------------------------------
+// Legacy content compatibility.
+//
+// `class="image fit"` appears 84 times across 12 posts as raw HTML inside the
+// Markdown, left over from the previous HTML5 UP template. These rules are
+// what keeps those images from breaking now that the template CSS is gone.
+// Do not remove without rewriting the post content.
+// ---------------------------------------------------------------------------
+
+.image.fit,
+.image.fit img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.prose .image.fit {
+	margin-top: var(--sp-5);
+	margin-bottom: var(--sp-5);
+}

@@ -1,0 +1,127 @@
+// Design tokens for the Modus Operandi / Vivendi theme.
+//
+// Palette values are taken verbatim from modus-themes 5.2.0, as vendored in
+// ~/.emacs.d/site-lisp/*/etc/themes/modus-themes.el, rather than from the
+// redesign mockup, whose values the notes themselves flagged as approximate.
+//
+// Three deliberate departures, each for a reason:
+//
+//   1. --accent is the Phase Alpha logo red, sampled from palogo.png. It
+//      measures 5.40:1 on white and 3.89:1 on black, so it never carries
+//      text. It is used for the active tab marker, focus rings and rules
+//      only. Red text uses --red, which is AAA in both schemes.
+//
+//   2. Mode line and status bar text uses --fg-main, which is what Emacs
+//      itself does (fg-mode-line-active). The mockup's dimmed grey-on-grey
+//      measured 4.19:1 light and 2.80:1 dark, the latter failing WCAG AA.
+//
+//   3. Dark foreground is #f1f1f1 rather than pure white, matching the
+//      `default` face override in helheim-modus-themes.el.
+//
+// Every other pairing used in this stylesheet clears WCAG AAA.
+
+// Breakpoints. 600px is where the two-column grid collapses and the chrome
+// begins shedding secondary segments.
+$bp-sm: 37.5rem;
+$bp-xs: 26rem;
+
+:root {
+	// ---- Modus Operandi (light) ----
+	--bg-main: #ffffff;
+	--bg-dim: #f2f2f2;
+	--fg-main: #000000;
+	--fg-dim: #595959;
+	--border: #9f9f9f;
+	--rule: #c4c4c4;
+
+	--blue: #0031a9;
+	--green: #006800;
+	--magenta: #721045;
+	--red: #a60000;
+
+	// Brand red. Non-text use only, see note 1 above.
+	--accent: #bb3e45;
+
+	--modeline-bg: #c8c8c8;
+	--modeline-fg: #000000;
+	--modeline-border: #5a5a5a;
+
+	--tabbar-bg: #dfdfdf;
+	--tab-current-bg: #ffffff;
+	--tab-other-bg: #c2c2c2;
+
+	--callout-bg: #f2f2f2;
+	--code-bg: #f5f5f5;
+
+	color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		// ---- Modus Vivendi (dark) ----
+		--bg-main: #000000;
+		--bg-dim: #1e1e1e;
+		--fg-main: #f1f1f1;
+		--fg-dim: #989898;
+		--border: #646464;
+		--rule: #303030;
+
+		--blue: #2fafff;
+		--green: #44bc44;
+		--magenta: #feacd0;
+		--red: #ff5f59;
+
+		--accent: #bb3e45;
+
+		--modeline-bg: #505050;
+		--modeline-fg: #ffffff;
+		--modeline-border: #959595;
+
+		--tabbar-bg: #313131;
+		--tab-current-bg: #000000;
+		--tab-other-bg: #545454;
+
+		--callout-bg: #161616;
+		--code-bg: #1e1e1e;
+	}
+}
+
+:root {
+	// ---- Type ----
+	// Named faces first so an Emacs user's installed fonts win, with a
+	// system stack behind them. No webfont is downloaded; see README if you
+	// want to self-host JetBrains Mono and Inter.
+	--font-mono: "JetBrains Mono", "Fira Code", "Iosevka", "Cascadia Code",
+		ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	--font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+		"Helvetica Neue", sans-serif;
+
+	// Chrome sits at 13px. Body copy is 16px rather than the mockup's 13-14px,
+	// which is too small for reading-length prose.
+	--fs-chrome: 0.8125rem;
+	--fs-eyebrow: 0.8125rem;
+	--fs-small: 0.875rem;
+	--fs-body: 1rem;
+	--fs-h3: 1.125rem;
+	--fs-h2: 1.375rem;
+	--fs-h1: clamp(1.75rem, 1.3rem + 2.2vw, 2.25rem);
+
+	--lh-tight: 1.3;
+	--lh-body: 1.65;
+
+	// ---- Space ----
+	--sp-1: 0.25rem;
+	--sp-2: 0.5rem;
+	--sp-3: 0.75rem;
+	--sp-4: 1rem;
+	--sp-5: 1.5rem;
+	--sp-6: 2rem;
+	--sp-7: 3rem;
+
+	// ---- Layout ----
+	--measure: 46rem;
+	--gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+
+	// Minimum comfortable touch target.
+	--touch: 2.75rem;
+}
