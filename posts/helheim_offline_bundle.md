@@ -3,6 +3,7 @@ title: Taking Helheim Emacs Offline - A Fork with Offline Bundle Support
 description: Adding offline installation capabilities to the Helheim Emacs configuration for machines without internet access.
 date: 2026-01-01
 image_path: '/helheim_offline.jpeg'
+tags: [tech]
 ---
 
 Emacs is many things—a text editor, a Lisp machine, a way to waste entire evenings tweaking configuration files. What it isn't, traditionally, is something you can easily set up on a machine without internet access. Helheim Emacs, an already excellent modal editor configuration built on top of [Hel](https://github.com/anuvyklack/hel)'s Helix emulation layer, had this problem. I decided to fix it.

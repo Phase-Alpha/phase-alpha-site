@@ -3,6 +3,7 @@ title: Singapore in 2019
 description: Short and sweet trip to singapore
 date: 2019-07-12
 image_path: '/singapore_2019_thumb.jpeg'
+tags: [travel]
 ---
 
 Our recent trip to Singapore was an exhilarating blend of vibrant city life, lush greenery, and unforgettable experiences. Here’s a detailed account of our whirlwind adventure in this incredible city-state.

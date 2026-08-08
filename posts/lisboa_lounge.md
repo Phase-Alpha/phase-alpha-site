@@ -3,6 +3,7 @@ title: Lounging Around
 description: Priority lounge experience at Aeroporto de Lisboa
 date: 2021-08-06
 image_path: '/lisboa_lounge.jpg'
+tags: [travel]
 ---
 
 I’ve had the American Express (AMEX) Gold Card for quite a few years now. The perk that I’ve always wanted to use was the lounge club, to have access to a lounge on a long layover. A buffet of food and drink, entertainment, shower rooms and sleeping pods, what’s not to like about lounges?

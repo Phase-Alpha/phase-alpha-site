@@ -13,11 +13,36 @@ pub struct PostMetadata {
     pub description: String,
     pub date: String,
     pub image_path: String,
+    /// Org-style tags, e.g. `tech` or `travel`.
+    ///
+    /// Defaulted so that a post without a `tags:` key still parses, which lets
+    /// the front matter be migrated a post at a time rather than all at once.
+    #[serde(default)]
+    pub tags: Vec<String>,
 }
 
 impl PostMetadata {
     pub fn create_href(&self) -> String {
         self.title.replace(' ', "-").to_lowercase()
+    }
+
+    /// Primary tag as an org-style `:tag:` label, or empty if the post is
+    /// untagged.
+    pub fn tag_label(&self) -> String {
+        match self.tags.first() {
+            Some(tag) => format!(":{tag}:"),
+            None => String::new(),
+        }
+    }
+
+    /// CSS classes for the primary tag. Colours follow the mockup: green for
+    /// tech, magenta for travel, muted for anything else.
+    pub fn tag_class(&self) -> &'static str {
+        match self.tags.first().map(String::as_str) {
+            Some("tech") => "tag tag--tech",
+            Some("travel") => "tag tag--travel",
+            _ => "tag tag--other",
+        }
     }
 }
 
@@ -98,6 +123,7 @@ mod tests {
                 description: String::from("Some testing"),
                 date: String::from("2023-10-15"),
                 image_path: String::from("./public/pic01.jpg"),
+                tags: vec![String::from("tech")],
             },
             content: String::from(
                 "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
@@ -116,6 +142,7 @@ mod tests {
                                 description: String::from("Some more testing"),
                                 date: String::from("2022-10-15"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                tags: vec![String::from("tech")],
                 },
                 content: String::from(
                     "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
@@ -128,6 +155,7 @@ mod tests {
                                 description: String::from("Some testing"),
                                 date: String::from("2023-10-14"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                tags: vec![String::from("tech")],
                 },
                 content: String::from(
                     "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
@@ -144,6 +172,7 @@ mod tests {
                                 description: String::from("Some testing"),
                                 date: String::from("2023-10-14"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                tags: vec![String::from("tech")],
                 },
                 content: String::from(
                     "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",
@@ -156,6 +185,7 @@ mod tests {
                                 description: String::from("Some more testing"),
                                 date: String::from("2022-10-15"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                tags: vec![String::from("tech")],
                 },
                 content: String::from(
                     "<h1>Test</h1>\n<p>Post content</p>\n<p><img src=\"./public/pic01.jpg\" alt=\"pic\" /></p>\n",

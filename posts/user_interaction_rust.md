@@ -3,6 +3,7 @@ title: Building Console Apps in Rust
 description: A Python Developer's Perspective
 date: 2023-12-23
 image_path: '/io_rust_blog.jpeg'
+tags: [tech]
 ---
 
 As a software engineer manily working with Python, I've recently been diving deeper into Rust, exploring how it handles common programming tasks that I usually breeze through in Python. Today, I want to share my experience building console applications in Rust, specifically focusing on user input handling and how it differs from Python's approach.

@@ -3,6 +3,7 @@ title: Foray into the Mud
 description: Constructing an apartment block in east Africa
 date: 2020-09-21
 image_path: '/Apartment-Block-Ground-Floor.jpg'
+tags: [design]
 ---
 
 There have been a few opportunities lately to be involved in space planning and architectural drafting. It brings up feelings of nostalgia and reminiscence.

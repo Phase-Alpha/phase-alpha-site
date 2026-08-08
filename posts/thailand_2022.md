@@ -3,6 +3,7 @@ title: Discovering Thailand in Covid Times
 description: First trip to South East Asia during semi-post Covid
 date: 2022-05-08
 image_path: '/thailand_2022.jpeg'
+tags: [travel]
 ---
 
 Our recent trip to Thailand was nothing short of an adventure. With a packed itinerary and diverse experiences, we explored everything from the bustling streets of Bangkok to the tranquil islands of Koh Samui, and finally, the serene beauty of Chiang Mai. Here’s a rundown of our journey.

@@ -63,19 +63,19 @@ pub fn App() -> impl IntoView {
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/phase-alpha-site.css"/>
 
-        // sets the document title
-        <Title text="Welcome to Phase Alpha"/>
+        <Title text="Phase Alpha — custom software and design"/>
 
-        // content for this welcome page
+        // No `main` wrapper here: `Layout` renders the single `main` element,
+        // along with the tab-bar, mode line and status bar around it. Nesting
+        // one `main` inside another would be invalid.
         <Router>
-            <main>
-                <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=home::HomePage/>
-                    <Route path=StaticSegment("services") view=services::Services/>
-                    <Route path=StaticSegment("blog") view=blog::Blog/>
-                    <Route path=path!("blog/:post") view=blog::BlogPost/>
-                </Routes>
-            </main>
+            <Routes fallback=|| "Page not found.".into_view()>
+                <Route path=StaticSegment("") view=home::HomePage/>
+                <Route path=StaticSegment("services") view=services::Services/>
+                <Route path=StaticSegment("contact") view=contact::Contact/>
+                <Route path=StaticSegment("blog") view=blog::Blog/>
+                <Route path=path!("blog/:post") view=blog::BlogPost/>
+            </Routes>
         </Router>
     }
 }

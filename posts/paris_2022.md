@@ -3,6 +3,7 @@ title: A Weekend in Paris
 description: Short and sweet trip to Paris
 date: 2022-07-15
 image_path: '/paris_thumb.jpeg'
+tags: [travel]
 ---
 
 Paris. The city of lights, romance, and apparently, a surprising amount of walking.  

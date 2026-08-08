@@ -1,4 +1,5 @@
 pub mod blog;
+pub mod contact;
 pub mod home;
-pub mod navigation;
+pub mod layout;
 pub mod services;

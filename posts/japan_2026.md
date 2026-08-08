@@ -3,6 +3,7 @@ title: Two Weeks in Japan
 description: Tokyo, Mount Fuji, Kyoto, Hiroshima, and Osaka
 date: 2026-05-10
 image_path: '/japan_thumb.jpeg'
+tags: [travel]
 ---
 
 We landed in Tokyo at 10pm, exhausted from the flight but too wired to sleep. The hotel in Nihonbashi was a about a 1 hour metro ride away, and I remember thinking how quiet the train was. Nobody talking. Just the hum of the carriage and the soft chime at each station. We made sure to get some cash and snacks from a convenience store on the walk to the hotel from the metro station.

@@ -3,6 +3,7 @@ title: Across the Pond in 2022
 description: Travelling through America in covid times
 date: 2022-01-26
 image_path: '/america_2022.jpeg'
+tags: [travel]
 ---
 
 As travel starts to become more accessible again, work sends me to the Sunshine State for…well…work.
