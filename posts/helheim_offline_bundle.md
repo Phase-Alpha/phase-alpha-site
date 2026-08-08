@@ -75,7 +75,9 @@ If you're curious about the technical details, here's what was added to the upst
 - Minor updates to **init.example.el**: Ensuring Eglot autoloads correctly
 - Changes to **xref configuration**: Better handling of fallback search backends
 
-The changes are minimal and don't affect the core Helheim experience. If you run Helheim with internet access, you'll never notice these additions.
+The changes are minimal and don't affect the core Helheim experience. If you run Helheim with internet access, you'll never notice these additions.  
+
+<img src="/helheim_offline.jpeg" class="image fit">
 
 ## The Fork
 

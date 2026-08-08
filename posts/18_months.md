@@ -1,7 +1,7 @@
 ---
 title: 18 Months
 description: Travelling in covid times
-date: 2020-08-21
+date: 2021-08-21
 image_path: '/barca_thumb.jpeg'
 tags: [travel]
 ---
