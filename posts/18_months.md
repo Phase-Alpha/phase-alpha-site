@@ -3,6 +3,7 @@ title: 18 Months
 description: Travelling in covid times
 date: 2020-08-21
 image_path: '/barca_thumb.jpeg'
+tags: [travel]
 ---
 
 Eighteen months feels like such a long time to go without traveling. I had forgotten what it feels like to be on a plane during takeoff and landing—much more nerve-wracking than I remember. Maybe I was just used to it from flying twice a year regularly for the last 10 years.

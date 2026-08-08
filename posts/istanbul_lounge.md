@@ -3,6 +3,7 @@ title: Turkish Hospitality at 30000 Feet Almost
 description: Premium lounge experience at Istanbul Airport with the Platinum card upgrade
 date: 2024-08-28
 image_path: '/istanbul_lounge_thumb.jpeg'
+tags: [travel]
 ---
 
 A few years ago, I wrote about my [lounge experience in Lisboa](/posts/lisboa_lounge) with my trusty AMEX Gold card. Fast forward to 2024, and I've since upgraded to the Platinum card - and let me tell you, the lounge game has seriously leveled up.

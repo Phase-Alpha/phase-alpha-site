@@ -3,6 +3,7 @@ title: Bali & Qatar - Just before Covid
 description: Honeymoon continued in Bali and Qatar
 date: 2019-11-19
 image_path: '/lembongan_villa.jpeg'
+tags: [travel]
 ---
 
 ### Discovering Bali and Qatar: A Journey Through Island Bliss and Middle Eastern Charm

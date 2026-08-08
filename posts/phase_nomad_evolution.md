@@ -3,6 +3,7 @@ title: From Spreadsheets to App Store - The PhaseNomad Journey
 description: How a simple flight tracking idea evolved from Google Sheets automation to a Rust-powered iOS app
 date: 2025-07-10
 image_path: '/phase_nomad_evolution.jpeg'
+tags: [tech]
 ---
 
 Sometimes the best projects start with the simplest annoyances. For me, it was manually checking flight prices across multiple websites, trying to find the perfect deal for my next adventure. What began as a basic Google Sheets automation script eventually evolved into PhaseNomad, a full-featured iOS app that's now available on the App Store.
