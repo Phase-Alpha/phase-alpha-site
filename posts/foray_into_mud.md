@@ -8,7 +8,7 @@ tags: [design]
 
 There have been a few opportunities lately to be involved in space planning and architectural drafting. It brings up feelings of nostalgia and reminiscence.
 
-The project goal was to optimize a 12-square-metre plot of land for an apartment block. The challenge was to create a floor plan that could potentially work for all floors of the building.
+The project goal was to optimize a 144-square-meter plot of land for an apartment block. The challenge was to create a floor plan that could potentially work for all floors of the building.
 
 The plan proposed by the contractors didn’t have optimal usage of space. Placement of the amenities was scattered.
 
