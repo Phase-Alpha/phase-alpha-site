@@ -50,39 +50,25 @@ Building the iOS app taught me a lot about user experience. The CLI was powerful
 
 ## The Architecture Today
 
-PhaseNomad now combines the best of both worlds:
+PhaseNomad now runs on both halves of that history. The `phase_nomad_core` library handles the API calls, data processing and business logic, compiled into an XCFramework that the iOS app links against. On top of that sits a SwiftUI interface for managing alerts, viewing results and configuring preferences, which was considerably less work than the equivalent in UIKit would have been. iOS background tasks keep the alerts updated while the app is closed, so there are no cron jobs or servers left to maintain.
 
-**Rust Core**: The `phase_nomad_core` library handles all the heavy lifting—API calls, data processing, and business logic. It's compiled into an XCFramework that the iOS app can use seamlessly.
-
-**Swift UI**: The iOS app provides an elegant interface for managing flight alerts, viewing results, and configuring preferences. SwiftUI made it possible to build a modern, responsive interface without the complexity of UIKit.
-
-**Background Processing**: iOS background tasks ensure your flight alerts stay updated even when you're not actively using the app. No more cron jobs or server maintenance.
-
-The app features everything the original automation had and more:
+The app does everything the original automation did:
 - Set up flight alerts with specific criteria (dates, prices, cabin class)
 - Background processing to check for new deals
 - Clean, organized results with direct booking links
-- No emails cluttering your inbox—just check the app when convenient
+- No emails cluttering your inbox, just open the app when it suits you
 
 ## Lessons Learned
 
-Looking back at this evolution, a few things stand out:
+The Google Sheets version was crude, but it proved the idea was worth chasing, and I'd have wasted months if I'd tried to build the app first. Rust earned its place the moment I needed the thing to stop breaking, and that same core logic now runs on every device the app is installed on.
 
-**Start Simple**: The Google Sheets automation was crude, but it validated the idea. Don't over-engineer from the start.
-
-**Rust for Performance**: When I needed reliability and speed, Rust delivered. The same core logic that powered the CLI now runs on many iOS devices.
-
-**User Experience Matters**: The most powerful tool is useless if it's hard to use. The iOS app made flight tracking accessible in a way the CLI never could.
-
-**UniFFI is Magic**: Being able to write performance-critical code in Rust and wrap it in a beautiful Swift interface is incredibly powerful. It's the best of both ecosystems.
+The part I underestimated was the interface. The CLI was more capable than the app in raw terms and I still checked it less often, purely because it was a faff. UniFFI is what made the combination possible, and writing the performance sensitive code once and wrapping it in Swift is the thing I'd take from this project into the next one.
 
 ## What's Next?
 
 PhaseNomad is now available on the App Store, and I'm constantly surprised by how much I use it myself. Instead of manually checking flight prices, I set up alerts and let the app work in the background. When I open it, I see exactly what I need: flights that match my criteria at prices I'm willing to pay.
 
-The journey from spreadsheet to app store taught me that sometimes the best solutions evolve gradually. Each phase built on the previous one, solving real problems along the way. The Google Sheets automation was clunky but functional. The Rust CLI was powerful but limited. The iOS app finally made flight tracking effortless.
-
-For anyone building their own automation projects, remember: start with what works, iterate based on real usage, and don't be afraid to completely rewrite when the benefits are clear. Sometimes the best architecture is the one that evolves naturally from solving real problems.
+None of this was planned. Each version existed because the previous one annoyed me enough to replace it, and every rewrite only made sense once that annoyance was obvious. That's the one thing I'd pass on: build the crude version first and let it tell you what's wrong with itself.
 
 Now, if you'll excuse me, I need to check if there are any good deals for my next adventure. Thankfully, I have an app for that.
 

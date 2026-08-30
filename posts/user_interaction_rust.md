@@ -88,13 +88,11 @@ Coming from Python, Rust's approach to console I/O initially felt overly complex
 - Error handling and edge cases
 - Creating clean abstractions while maintaining safety
 
-While I still reach for Python when I need to quickly prototype something, I've grown to appreciate Rust's approach for systems where reliability and explicit error handling are crucial.
+I still reach for Python when I want to prototype something quickly, but for anything where reliability and explicit error handling matter, Rust forcing the issue has grown on me.
 
-The next time you're building a console application in Rust, consider what level of abstraction makes sense for your use case. Sometimes, the verbose approach might be exactly what you need; other times, creating your own abstractions (like our `ask_question` function) might make more sense.
+Whether you want the verbose version or something like `ask_question` mostly comes down to how many times you're going to call it. Two or three and I'd leave it inline. Any more than that and the helper earns its place.
 
-Happy coding!
-
-Ahmed  
+Ahmed
 
 
 [Source](https://github.com/jigypeper/user-interaction)
