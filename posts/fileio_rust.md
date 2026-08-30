@@ -6,27 +6,19 @@ image_path: '/fileio_rust.jpeg'
 tags: [tech]
 ---
 
-### Simplifying File Processing in Rust: A Quick Look at Parsing and Writing Data
+Following on from the console input post, here's the other thing I do constantly in Python and had to relearn in Rust: read a file, do something to what's in it, write the result back out.
 
-Rust, a language celebrated for its performance and safety, also provides powerful and straightforward tools for file I/O operations. Let's take a closer look at a simple Rust program that reads, parses, and writes data from and to text files. This example illustrates Rust's capabilities for handling file-based data, a common task in many applications.
+The program below reads a text file of names and dates of birth, formats them into a table, and writes that table to a second file. Nothing clever, but it covers most of what I actually need day to day.
 
-#### Overview of the Program
-
-Our focus is a Rust program designed to read a text file containing names and dates of birth (DOB), process the data, and write the formatted output to another file. The simplicity of the task underlines Rust's efficiency in managing file operations.
-
-#### Reading the File
-
-The program starts by reading a file named `DOB.txt`:
+## Reading the file
 
 ```rust
 let contents = fs::read_to_string("./DOB.txt").expect("File path does not exist");
 ```
 
-This line utilizes Rust's `std::fs` module to read the entire file into a string. The `expect` method is used here to handle any potential error that might occur while reading the file, such as if the file does not exist.
+`std::fs` pulls the whole file into a string in one line. `expect` panics if the file isn't there, which is fine for a small tool where you want to know immediately and loudly. Anything longer lived and you'd match on the `Result` properly.
 
-#### Parsing the Contents
-
-The next step is to parse the contents of the file:
+## Parsing the contents
 
 ```rust
 let vec_contents: Vec<Vec<_>> = contents
@@ -35,11 +27,9 @@ let vec_contents: Vec<Vec<_>> = contents
     .collect();
 ```
 
-Here, the program processes each line of the file, splitting it into words based on whitespace. The result is a vector of vectors, where each inner vector represents the words of a line.
+Each line gets split on whitespace, so you end up with a vector of vectors where the inner one holds the words of that line. Coming from Python, this is the part that felt most familiar. It's a list comprehension with more ceremony around the types.
 
-#### Formatting and Outputting the Data
-
-After parsing, the program formats and prints the data:
+## Formatting and printing
 
 ```rust
 println!("Name | DOB\n=========================");
@@ -54,27 +44,18 @@ vec_contents.iter().for_each(|p| {
 });
 ```
 
-The program assumes the first two elements of each line are the name and the last three elements are the date of birth. It joins these elements with a vertical bar (`|`) and prints them. This format is also appended to a `String` variable `data` for writing to the output file.
+The assumption here is that the first two elements of each line are the name and the last three are the date of birth. They get joined with a vertical bar, printed, and appended to `data` for writing out later.
 
-#### Writing to the Output File
+That indexing is the fragile part. `p[p.len() - 3..]` will panic on any line with fewer than three whitespace separated chunks, so the input file has to be well behaved. For something I run on a file I control, I'll take that trade.
 
-Finally, the formatted data is written to an output file:
+## Writing the output
 
 ```rust
 let _ = fs::write("./output.txt", data);
 ```
 
-The `fs::write` function is used to create (or overwrite if it already exists) an output file named `output.txt`, containing the formatted data.
+`fs::write` creates `output.txt`, or overwrites it if it already exists. The `let _ =` quietly throws away the `Result`, which is another thing I wouldn't do in anything that mattered.
 
-#### Key Takeaways
-
-- **Ease of File I/O**: Rust's standard library provides straightforward methods for reading from and writing to files, making file I/O operations easy to implement.
-- **Error Handling**: Using methods like `expect` ensures that the program handles potential errors, such as missing files, gracefully.
-- **Data Processing**: Rust's iterator methods, such as `map` and `collect`, offer a concise and efficient way to process and transform data.
-- **String Manipulation**: The program demonstrates simple yet effective ways of handling and manipulating strings in Rust.
-
-#### Conclusion
-
-This Rust program exemplifies the language's capabilities in handling common tasks like file reading, data parsing, and writing to files. The combination of Rust's safety features, efficient data handling, and powerful standard library makes it an excellent choice for file processing tasks. Whether you're new to Rust or looking to brush up on file I/O operations, this example serves as a practical guide to Rust's approach to handling file-based data.
+Read, split, join, write. The standard library covers the whole thing without a single dependency, and that's still the bit that surprises me most coming from Python.
 
 [Source](https://github.com/jigypeper/file-read)

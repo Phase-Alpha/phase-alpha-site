@@ -6,52 +6,34 @@ image_path: '/istanbul_lounge_thumb.jpeg'
 tags: [travel]
 ---
 
-A few years ago, I wrote about my [lounge experience in Lisboa](/posts/lisboa_lounge) with my trusty AMEX Gold card. Fast forward to 2024, and I've since upgraded to the Platinum card - and let me tell you, the lounge game has seriously leveled up.
+A few years ago I wrote about the [lounge in Lisboa](/posts/lisboa_lounge) and my trusty AMEX Gold card. That was a pandemic era lounge: buffets shut, order what you want from a till, make the best of it. I've since upgraded to Platinum, and our layover in Istanbul this year was a different thing entirely.
 
-During our layover in Istanbul this year, I discovered what airport lounges are really supposed to be like when they're not operating under pandemic restrictions. Gone were the days of ordering from a till because the buffets were closed. Instead, we walked into what felt like a premium hotel lobby.
+## Space to actually breathe
 
-## Space to Actually Breathe
+The first thing I noticed was the size of it. Lisboa felt cramped. Istanbul's Priority Pass lounge could swallow half the airport and still have quiet corners going spare, with separate seating areas and a family section.
 
-The first thing that struck me was the sheer space. Unlike the cramped Lisboa experience, Istanbul's Priority Pass lounge felt like it could accommodate half the airport without feeling crowded. Comfortable seating areas, quiet zones, and even family sections - it's clear they've thought about different travelers' needs.
+## The food
 
-## The Food Game Has Changed
-
-Remember how I mentioned there's always room for Pastel de Nata? Well, in Istanbul, there's room for everything. The buffet was not only open but expansive. Fresh salads, hot dishes, desserts that looked almost too good to eat (almost), and a selection that catered to various dietary preferences.
+The buffet was open, which after Lisboa felt like a novelty on its own. Fresh salads, hot dishes, and a dessert counter I made two trips to. The vegetarian spread was wider than some full restaurant menus I've sat in front of.
 
 <img src="/istanbul_lounge_veg_plate.jpeg" class="image fit">
 
-The vegetarian options alone were more diverse than some entire restaurant menus I've seen. And speaking of desserts...
-
 <img src="/istanbul_lounge_dessert_selection.jpeg" class="image fit">
 
-## Complimentary Massages? Yes, Please!
+## Complimentary massages
 
-Here's where Istanbul really surprised me. Complimentary massages. In an airport lounge. I had to double-check that I wasn't dreaming or that there wasn't some hidden catch. Nope - legitimate, professional massage therapists offering sessions to help you relax before your flight.
+This is the part I did not see coming. Actual massage therapists, in an airport lounge, at no extra cost. I spent a good minute looking for the catch before accepting there wasn't one. After a long flight it's a strange thing to be handed, and it left me wishing the layover was longer, which isn't a sentence I ever expected to write.
 
-After hours of travel, there's something almost surreal about getting a massage in an airport. It's the kind of perk that makes you forget you're in transit and almost makes you wish your layover was longer.
+Technically we were still on the ground, so the title is doing some heavy lifting, but you get the idea.
 
-## The Platinum Difference
+## Is Platinum worth it?
 
-Upgrading from Gold to Platinum has been one of those decisions that pays for itself in experiences like this. The lounge access isn't just about free food and wifi anymore - it's about genuinely premium experiences that make travel less of a chore and more of a journey worth enjoying.
+For how much I travel, the unlimited lounge access covers most of the fee on its own. The travel insurance, hotel status and car rental cover are the sort of thing I forget I have until the moment I need them. If you only pass through a lounge once or twice a year, the maths is much harder to justify.
 
-The Istanbul lounge reminded me why I love travel in the first place. It's not just about getting from A to B; it's about the moments in between that can surprise and delight you.
+Here's the part I wish someone had spelled out for me sooner. You don't have to start at Gold or Platinum at all. Amex has a whole range of cards, including no-fee ones, and most come with a welcome bonus of their own. Apply through a referral link and the new cardholder gets an upgraded bonus while a few points come my way too, so it really is win win, same as it was back in Lisboa.
 
-## Worth the Upgrade?
+The catch worth knowing: you generally won't get the welcome bonus if you've held any personal Amex card in the previous 24 months. So it pays to be a little strategic about which one you open first rather than grabbing Platinum on a whim. Quite often a cheaper card hands you a better bonus for the spend, and you can always upgrade later once the lounge life gets its hooks into you.
 
-If you're still on the fence about upgrading your card or even getting lounge access in the first place, experiences like Istanbul make it clear: this isn't just about avoiding airport food (though that's certainly a bonus). It's about transforming dead time into recovery time, turning layovers into experiences, and occasionally getting a massage at 30,000 feet.
-
-Well, technically we were still on the ground, but you get the idea.
-
-## Which Card to Actually Start With
-
-Is the fee worth it? For how much I travel, the unlimited lounge access alone covers most of it, and the travel insurance, hotel status and car rental cover are the sort of thing I forget I have until the moment I need them. If you only pass through a lounge once or twice a year, the maths is harder to justify.
-
-Here is the part I wish someone had spelled out for me sooner though: you do not have to start at Gold or Platinum at all. Amex has a whole range of cards, including no-fee ones, and most come with a welcome bonus of their own. Apply through a referral link and the new cardholder gets an upgraded bonus while a few points come my way too, so it really is win win, same as it was back in Lisboa.
-
-The catch worth knowing: you generally will not get the welcome bonus if you have held any personal Amex card in the previous 24 months. So it pays to be a little strategic about which one you open first rather than grabbing Platinum on a whim. Quite often a cheaper card hands you a better bonus for the spend, and you can always upgrade later once the lounge life gets its hooks into you.
-
-If you fancy a look, here is my referral link. I only mention cards I actually carry.
+If you fancy a look, here's my referral link. I only mention cards I actually carry.
 
 [Apply for AMEX Cards - Referral Link](https://americanexpress.com/en-gb/referral/platinum-credit?ref=aHMEDHLthg)
-
-From a till-service lounge in Lisboa to complimentary massages in Istanbul, it has been quite the journey, and one I am glad to share.
