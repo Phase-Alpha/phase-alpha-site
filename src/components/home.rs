@@ -1,4 +1,5 @@
 use crate::components::layout::Layout;
+use crate::components::seo::SeoMeta;
 use crate::server_functions::posts::*;
 use leptos::prelude::*;
 
@@ -42,6 +43,11 @@ pub fn HomePage() -> impl IntoView {
     };
 
     view! {
+        <SeoMeta
+            title="Phase Alpha"
+            description="Custom software and design for small teams who need to ship something real."
+            path="/"
+        />
         <Layout buffer="*phase-alpha*" mode="(Fundamental)">
             <section class="section">
                 <img

@@ -1,9 +1,15 @@
 use crate::components::layout::Layout;
+use crate::components::seo::SeoMeta;
 use leptos::prelude::*;
 
 #[component]
 pub fn Services() -> impl IntoView {
     view! {
+        <SeoMeta
+            title="Services"
+            description="Custom software, automation, design, and writing services from Phase Alpha."
+            path="/services"
+        />
         <Layout buffer="*services*" mode="(Org)">
             <section class="section">
                 <span class="eyebrow">";; ~/phase-alpha/services.org"</span>
