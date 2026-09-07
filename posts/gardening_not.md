@@ -3,6 +3,7 @@ title: Gardening or not
 description: Changing a jungle into a clean landscape
 date: 2020-11-08
 image_path: '/garden_design.png'
+slug: gardening-or-not
 tags: [design]
 ---
 
@@ -14,10 +15,10 @@ The weeds in our garden were growing out of control. Spending an entire week pul
 
 The initial idea was to pack as much as possible into the garden. Unfortunately, the budget did not allow for a waterfall and olive trees... We thought it was better to keep it simple for a first home garden.
 
-<img src="/jungle.jpeg" class="image fit">
+<img src="/jungle.jpeg" class="image fit" alt="Overgrown garden before landscaping">
 
 After contacting a few landscapers, we managed to get a reasonably priced quote. I’m not sure how they managed to get this equipment into the garden because we only have a small entrance. I came home to this and it was quite a shock how much they could get done so quickly.
 
-<img src="/garden.jpeg" class="image fit">
+<img src="/garden.jpeg" class="image fit" alt="Garden after landscaping">
 
 I bet you didn’t think that this post was about a garden renovation!

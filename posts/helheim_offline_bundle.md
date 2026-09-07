@@ -3,6 +3,7 @@ title: Getting Helheim Emacs Running on Air-Gapped Machines
 description: Vendoring packages and running a separate branch so Helheim Emacs works on machines that will never see the internet.
 date: 2026-01-01
 image_path: '/helheim_offline.jpeg'
+slug: getting-helheim-emacs-running-on-air-gapped-machines
 tags: [tech]
 ---
 
@@ -20,7 +21,7 @@ Getting a build out to the airgapped machines goes through GitHub Actions rather
 
 Even that had a dumb bug in it. The first version of the tar command ran inside the same directory it was writing the archive into, so tar tried to include the file it hadn't finished writing yet and choked on referencing itself. Fixed by writing to `/tmp` first and moving the finished tarball into place afterward. Small thing, but the kind of bug you only catch by actually running the release against a real checkout.
 
-<img src="/helheim_offline.jpeg" class="image fit">
+<img src="/helheim_offline.jpeg" class="image fit" alt="Helheim Emacs running on an air-gapped machine">
 
 The `airgapped` branch also carries its own changes to `init.el`, separate from anything about packaging. Font setup runs directly at startup instead of waiting on a daemon and client to attach, since there's no client coming. Tree-sitter mode remaps get stripped unconditionally rather than only when tree-sitter happens to be missing, on the assumption the machine won't have the grammars either way. `org-directory` points at a plain local notes folder instead of an Obsidian vault, and `org-vault-sync`, which normally syncs notes over git on startup and shutdown, is dropped entirely, since there's no network for it to sync over. The Helheim wrappers for C++, Emacs Lisp, and JSON are gone in favor of Emacs's own built-in modes, plus the vendored `json-mode` where it's useful. Eglot looks up `clangd` with `executable-find` instead of a path I hardcoded for one machine, and `harper-ls` is gone too, since it's one more thing that wants updates from the internet. Even the GDB attach helper that exists on the upstream branch got dropped on airgapped, along with a handful of smaller fixes that only make sense once you're actually running it daily: an ibuffer predicate that fired at the wrong time, a tab-bar history guard, a header-line face that assumed something it shouldn't have.
 

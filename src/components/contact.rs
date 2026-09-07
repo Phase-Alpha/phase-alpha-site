@@ -1,4 +1,5 @@
 use crate::components::layout::Layout;
+use crate::components::seo::SeoMeta;
 use crate::server_functions::form_email::*;
 use crate::server_functions::turnstile::{CONTACT_FORM_ACTION, RESPONSE_FIELD_NAME};
 use leptos::prelude::*;
@@ -79,6 +80,11 @@ pub fn Contact() -> impl IntoView {
     };
 
     view! {
+        <SeoMeta
+            title="Get in touch"
+            description="Have a project in mind? Tell Phase Alpha about it and we will get back to you."
+            path="/contact"
+        />
         <Layout buffer="*get-in-touch*" mode="(Form)">
             <section class="section">
                 <span class="eyebrow">";; ~/phase-alpha/contact"</span>

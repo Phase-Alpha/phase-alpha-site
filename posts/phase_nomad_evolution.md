@@ -3,6 +3,7 @@ title: From Spreadsheets to App Store - The PhaseNomad Journey
 description: How a simple flight tracking idea evolved from Google Sheets automation to a Rust-powered iOS app
 date: 2025-07-10
 image_path: '/phase_nomad_evolution.jpeg'
+slug: from-spreadsheets-to-app-store-the-phasenomad-journey
 tags: [tech]
 ---
 

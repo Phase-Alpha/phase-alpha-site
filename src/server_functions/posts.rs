@@ -13,6 +13,10 @@ pub struct PostMetadata {
     pub description: String,
     pub date: String,
     pub image_path: String,
+    /// Stable, front-matter-stored URL slug. Kept separate from `title` so
+    /// editing a title later doesn't change the post's URL (and break any
+    /// backlinks/bookmarks pointing at it).
+    pub slug: String,
     /// Org-style tags, e.g. `tech` or `travel`.
     ///
     /// Defaulted so that a post without a `tags:` key still parses, which lets
@@ -23,6 +27,14 @@ pub struct PostMetadata {
 
 impl PostMetadata {
     pub fn create_href(&self) -> String {
+        self.slug.clone()
+    }
+
+    /// Reproduces the pre-slug URL derivation (title, lowercased, spaces
+    /// turned into hyphens, punctuation left untouched). Used only to detect
+    /// and redirect old indexed/bookmarked URLs to the current `slug` — new
+    /// links should always use `create_href`.
+    pub fn legacy_href(&self) -> String {
         self.title.replace(' ', "-").to_lowercase()
     }
 
@@ -123,6 +135,7 @@ mod tests {
                 description: String::from("Some testing"),
                 date: String::from("2023-10-15"),
                 image_path: String::from("./public/pic01.jpg"),
+                slug: String::from("test-post"),
                 tags: vec![String::from("tech")],
             },
             content: String::from(
@@ -142,6 +155,7 @@ mod tests {
                                 description: String::from("Some more testing"),
                                 date: String::from("2022-10-15"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                slug: String::from("test-post-1"),
                                 tags: vec![String::from("tech")],
                 },
                 content: String::from(
@@ -155,6 +169,7 @@ mod tests {
                                 description: String::from("Some testing"),
                                 date: String::from("2023-10-14"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                slug: String::from("test-post-2"),
                                 tags: vec![String::from("tech")],
                 },
                 content: String::from(
@@ -172,6 +187,7 @@ mod tests {
                                 description: String::from("Some testing"),
                                 date: String::from("2023-10-14"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                slug: String::from("test-post-2"),
                                 tags: vec![String::from("tech")],
                 },
                 content: String::from(
@@ -185,6 +201,7 @@ mod tests {
                                 description: String::from("Some more testing"),
                                 date: String::from("2022-10-15"),
                                 image_path: String::from("./public/pic01.jpg"),
+                                slug: String::from("test-post-1"),
                                 tags: vec![String::from("tech")],
                 },
                 content: String::from(
