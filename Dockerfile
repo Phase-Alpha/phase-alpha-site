@@ -23,6 +23,16 @@ RUN apt-get update -y \
 # Install cargo-leptos using pre-built binary
 RUN cargo binstall cargo-leptos -y
 
+# Pre-install wasm-bindgen-cli at the exact version pinned in Cargo.toml.
+# cargo-leptos will auto-download it otherwise, but its installer always
+# requests the "aarch64-unknown-linux-musl" asset on aarch64 Linux, which
+# wasm-bindgen has never published (only aarch64-unknown-linux-gnu exists);
+# that download 404s every time on this glibc image. Installing it up front
+# via cargo-binstall (which correctly resolves to the gnu asset) means
+# cargo-leptos finds a matching version already on PATH and skips its own
+# download step.
+RUN cargo binstall wasm-bindgen-cli --version 0.2.100 -y
+
 # Add the WASM target
 RUN rustup target add wasm32-unknown-unknown
 
