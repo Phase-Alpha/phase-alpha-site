@@ -3,6 +3,7 @@ title: Bali & Qatar - Just before Covid
 description: Honeymoon continued in Bali and Qatar
 date: 2019-11-19
 image_path: '/lembongan_villa.jpeg'
+slug: bali-qatar-just-before-covid
 tags: [travel]
 ---
 
@@ -14,23 +15,23 @@ The journey started on Qatar Airways, which is a fantastic airline if you ask me
 
 We arrived late, which meant a long transfer to our hotel in Ubud with a few extra stops along the way. The exhaustion went away quickly once we saw where we were staying, right in the middle of the jungle.
 
-<img src="/ubud_forest_hotel.jpeg" class="image fit">
-<img src="/ubud_hotel.jpeg" class="image fit">
+<img src="/ubud_forest_hotel.jpeg" class="image fit" alt="Jungle hotel grounds in Ubud, Bali">
+<img src="/ubud_hotel.jpeg" class="image fit" alt="Hotel room in Ubud, Bali">
 
 ## Ubud
 
 We took a short walk that night to find dinner and ended up with lobster that didn’t break the bank. The first night brought a torrential downpour, and the sound of rain on the jungle was oddly relaxing.
 
-<img src="/ubud_lobster_dinner.jpeg" class="image fit">
+<img src="/ubud_lobster_dinner.jpeg" class="image fit" alt="Lobster dinner in Ubud, Bali">
 
 The next morning the rain had stopped and we headed out to explore. Our hotel was a short walk from the Monkey Sanctuary, which is a surreal place. They tell you not to carry food around the monkeys and they mean it. These little guys are bold and quick.
 
-<img src="/ubud_monkey_sanctuary.jpeg" class="image fit">
+<img src="/ubud_monkey_sanctuary.jpeg" class="image fit" alt="Monkey Sanctuary in Ubud, Bali">
 
 Next were the rice terraces, which live up to the photos. We tried Bali’s famous civet cat coffee while we were there. There are a lot of imitations, but we eventually found the real thing and got to see the civet cats responsible for it.
 
-<img src="/rice_terrace.jpeg" class="image fit">
-<img src="/cat_coffee.jpeg" class="image fit">
+<img src="/rice_terrace.jpeg" class="image fit" alt="Rice terraces near Ubud, Bali">
+<img src="/cat_coffee.jpeg" class="image fit" alt="Civet cat coffee in Bali">
 
 ## Nusa Lembongan
 
@@ -40,7 +41,7 @@ Transport is the thing to sort out here, and it helps if you’re comfortable on
 
 The island has its quirks. Late night strolls aren’t advised unless you’re fine with a few unexpected encounters with local dogs. Otherwise it’s a quiet escape from the mainland.
 
-<img src="/lembongan_villa.jpeg" class="image fit">
+<img src="/lembongan_villa.jpeg" class="image fit" alt="Villa on Nusa Lembongan, Bali">
 
 ## Seminyak
 
@@ -50,7 +51,7 @@ One of the highlights was a personal massage, though I quickly learned that my f
 
 The sunsets on the beach were the best part of the evenings.
 
-<img src="/seminyak_sunset.jpeg" class="image fit">
+<img src="/seminyak_sunset.jpeg" class="image fit" alt="Sunset on the beach in Seminyak, Bali">
 
 ## Qatar: Souq Waqif, the Museums and a Gondola in a Mall
 
@@ -58,15 +59,15 @@ We wrapped up with a stopover in Qatar, staying near Souq Waqif. It’s a mix of
 
 The Islamic museum is a must see if you have the time. The architecture is spectacular and the exhibits are informative too. The national museum is worth it as well.
 
-<img src="/qatar_national_museum.jpeg" class="image fit">
+<img src="/qatar_national_museum.jpeg" class="image fit" alt="National Museum of Qatar in Doha">
 
 We also had the best kanafeh I’ve ever tasted, from a shop we almost missed despite circling the area several times. Villaggio Mall has an indoor gondola ride, which is Venice in the desert and every bit as odd as that sounds.
 
-<img src="/villagio.jpeg" class="image fit">
+<img src="/villagio.jpeg" class="image fit" alt="Indoor gondola ride at Villaggio Mall in Doha">
 
 Then The Pearl, a luxurious area full of expat communities where the pedestrian crossings actually work, with a marina that had me thinking about living there.
 
-<img src="/marina_pearl.jpeg" class="image fit">
+<img src="/marina_pearl.jpeg" class="image fit" alt="Marina at The Pearl in Doha">
 
 ## Last Few Hours
 

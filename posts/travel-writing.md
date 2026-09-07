@@ -3,6 +3,7 @@ title: What to Write in a Travel Journal
 description: Ten small questions that beat a blank page
 date: 2026-08-28
 image_path: '/demo_france_page1.png'
+slug: what-to-write-in-a-travel-journal
 tags: [travel]
 ---
 
@@ -35,11 +36,11 @@ None of these need good writing. That’s the point. The barrier was never wheth
 
 This is the idea behind My Travel Scrapbook, an interactive PDF journal built around these prompts instead of blank pages. Every country gets its own two-page spread with the categories already in place: favourite food, a word you learned, cities explored as tap-to-check trackers, photo slots, and a notes page for the longer stuff. There’s never a blank page looking back at you, just boxes to fill.
 
-<img src="/demo_france_page1.jpg" class="image fit">
+<img src="/demo_france_page1.jpg" class="image fit" alt="My Travel Scrapbook interactive PDF journal page for France">
 
 It’s a tappable PDF, so it works in Acrobat, Preview and most browsers. If you’d rather write by hand, it’s checkable with an Apple Pencil in GoodNotes and Notability too.
 
-<img src="/demo_france_page2.jpg" class="image fit">
+<img src="/demo_france_page2.jpg" class="image fit" alt="My Travel Scrapbook interactive PDF journal notes page">
 
 [See the full World Edition](https://www.etsy.com/uk/listing/4560844275/interactive-travel-journal-pdf-cute?ref=shop_home_active_3&dd=1&logging_key=d2accaec0638bf9419e4b7f673e300aef0b6d747%3A4560844275), or the [Europe](https://www.etsy.com/uk/listing/4560852960/interactive-europe-travel-journal-pdf?ref=shop_home_feat_4&dd=1&logging_key=c462723473ebc82924010d40d8208bff1fdbc085%3A4560852960) and [Asia](https://www.etsy.com/uk/listing/4560824575/interactive-asia-travel-journal-pdf?ref=shop_home_feat_1&dd=1&logging_key=e5a6816badaaee9c0d201f3eed2e9aca50ab3693%3A4560824575) editions if you don’t need all 175 countries.
 

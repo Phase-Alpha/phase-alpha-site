@@ -3,6 +3,7 @@ title: Building Console Apps in Rust
 description: A Python Developer's Perspective
 date: 2023-12-23
 image_path: '/io_rust_blog.jpeg'
+slug: building-console-apps-in-rust
 tags: [tech]
 ---
 

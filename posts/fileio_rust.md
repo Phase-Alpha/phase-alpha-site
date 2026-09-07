@@ -3,6 +3,7 @@ title: File Processing in Rust
 description: A simple example to showcase how to interact with files in rust.
 date: 2024-01-08
 image_path: '/fileio_rust.jpeg'
+slug: file-processing-in-rust
 tags: [tech]
 ---
 

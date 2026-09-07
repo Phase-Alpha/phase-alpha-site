@@ -3,10 +3,11 @@ title: Turkish Hospitality at 30000 Feet Almost
 description: Premium lounge experience at Istanbul Airport with the Platinum card upgrade
 date: 2024-08-28
 image_path: '/istanbul_lounge_thumb.jpeg'
+slug: turkish-hospitality-at-30000-feet-almost
 tags: [travel]
 ---
 
-A few years ago I wrote about the [lounge in Lisboa](/posts/lisboa_lounge) and my trusty AMEX Gold card. That was a pandemic era lounge: buffets shut, order what you want from a till, make the best of it. I've since upgraded to Platinum, and our layover in Istanbul this year was a different thing entirely.
+A few years ago I wrote about the [lounge in Lisboa](/blog/lounging-around) and my trusty AMEX Gold card. That was a pandemic era lounge: buffets shut, order what you want from a till, make the best of it. I've since upgraded to Platinum, and our layover in Istanbul this year was a different thing entirely.
 
 ## Space to actually breathe
 
@@ -16,9 +17,9 @@ The first thing I noticed was the size of it. Lisboa felt cramped. Istanbul's Pr
 
 The buffet was open, which after Lisboa felt like a novelty on its own. Fresh salads, hot dishes, and a dessert counter I made two trips to. The vegetarian spread was wider than some full restaurant menus I've sat in front of.
 
-<img src="/istanbul_lounge_veg_plate.jpeg" class="image fit">
+<img src="/istanbul_lounge_veg_plate.jpeg" class="image fit" alt="Vegetarian plate at the Istanbul Airport lounge">
 
-<img src="/istanbul_lounge_dessert_selection.jpeg" class="image fit">
+<img src="/istanbul_lounge_dessert_selection.jpeg" class="image fit" alt="Dessert selection at the Istanbul Airport lounge">
 
 ## Complimentary massages
 
